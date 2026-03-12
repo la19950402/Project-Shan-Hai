@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>山海異獸誌｜教師登入</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-panel: #1e293b;
+      --bg-panel-2: #172033;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border-color: rgba(148, 163, 184, 0.18);
+      --input-bg: rgba(15, 23, 42, 0.72);
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --accent-glow: rgba(59, 130, 246, 0.35);
+      --muted: #64748b;
+      --success: #22c55e;
+      --danger: #f87171;
+      --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.45);
+      --radius-xl: 16px;
+      --radius-lg: 12px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(59, 130, 246, 0.12), transparent 28%),
+        linear-gradient(180deg, #0b1220 0%, var(--bg-dark) 100%);
+      color: var(--text-primary);
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-shell { width: 100%; max-width: 440px; }
+    .login-card {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 100%),
+        var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 32px 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(59, 130, 246, 0.14), transparent 24%),
+        radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.1), transparent 24%);
+      pointer-events: none;
+    }
+    .login-header { position: relative; z-index: 1; text-align: center; margin-bottom: 28px; }
+    .login-badge {
+      width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 18px; display: grid; place-items: center;
+      font-size: 28px; background: linear-gradient(135deg, rgba(59,130,246,.22), rgba(16,185,129,.16));
+      border: 1px solid rgba(59,130,246,.22); box-shadow: 0 10px 24px rgba(59,130,246,.15);
+    }
+    .login-title { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: .04em; }
+    .login-subtitle { margin: 8px 0 0; color: var(--text-secondary); font-size: 14px; letter-spacing: .06em; }
+    .login-form { position: relative; z-index: 1; display: grid; gap: 16px; }
+    .field-group { display: grid; gap: 8px; }
+    .field-label { font-size: 14px; font-weight: 600; color: #cbd5e1; }
+    .input-wrap input {
+      width: 100%; height: 52px; border-radius: var(--radius-lg); border: 1px solid rgba(148,163,184,.2);
+      background: var(--input-bg); color: var(--text-primary); padding: 0 16px; font-size: 15px; outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .15s ease, background .2s ease;
+    }
+    .input-wrap input::placeholder { color: #64748b; }
+    .input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); background: rgba(15,23,42,.92); }
+    .input-wrap input:hover { border-color: rgba(148,163,184,.34); }
+    .login-btn {
+      width: 100%; height: 52px; border: 0; border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--accent), #2563eb); color: white; font-size: 16px; font-weight: 700;
+      letter-spacing: .03em; cursor: pointer; transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 12px 28px rgba(37,99,235,.28), 0 0 0 1px rgba(255,255,255,.04) inset; margin-top: 4px;
+    }
+    .login-btn:hover { background: linear-gradient(135deg, var(--accent-hover), #1d4ed8); box-shadow: 0 14px 32px rgba(37,99,235,.34), 0 0 18px rgba(59,130,246,.28); transform: translateY(-1px); }
+    .login-btn:active { transform: translateY(1px) scale(.995); box-shadow: 0 8px 18px rgba(37,99,235,.24); }
+    .login-btn[disabled] { opacity: .7; cursor: wait; transform: none; }
+    .login-status { min-height: 22px; font-size: 14px; margin-top: 4px; color: var(--text-secondary); }
+    .login-status.is-error { color: var(--danger); }
+    .login-status.is-success { color: var(--success); }
+    .login-footer { position: relative; z-index: 1; text-align: center; margin-top: 16px; font-size: 13px; color: var(--muted); }
+    .login-link { display: inline-flex; margin-top: 12px; color: #93c5fd; text-decoration: none; font-size: 13px; }
+    .login-link:hover { color: #bfdbfe; }
+    @media (max-width: 520px) {
+      body { padding: 16px; }
+      .login-card { padding: 28px 20px 20px; }
+      .login-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-card" aria-label="教師登入卡片">
+      <header class="login-header">
+        <div class="login-badge" aria-hidden="true">🧑‍🏫🐉</div>
+        <h1 class="login-title">山海學園</h1>
+        <p class="login-subtitle">教師專屬主控台</p>
+      </header>
+
+      <form class="login-form" id="teacher-login-form">
+        <div class="field-group">
+          <label class="field-label" for="teacher-account">教師帳號</label>
+          <div class="input-wrap">
+            <input id="teacher-account" name="teacher-account" type="text" autocomplete="username" placeholder="請輸入老師帳號或 Email" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="teacher-password">密碼</label>
+          <div class="input-wrap">
+            <input id="teacher-password" name="teacher-password" type="password" autocomplete="current-password" placeholder="請輸入密碼" />
+          </div>
+        </div>
+
+        <button class="login-btn" id="teacher-login-btn" type="submit">登入系統</button>
+        <div id="login-status" class="login-status">請使用老師帳號登入主控台。</div>
+      </form>
+
+      <div class="login-footer">
+        忘記密碼？請聯繫系統管理員
+        <div><a class="login-link" href="./dashboard.html">直接進入教師主控台</a></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { teacherLogin, mapTeacherLoginError, bindTeacherAuthState } from './js/services/auth-service.js?v=step24-r28-card-batch-workflow-20260312h';
+
+    const form = document.getElementById('teacher-login-form');
+    const accountInput = document.getElementById('teacher-account');
+    const passwordInput = document.getElementById('teacher-password');
+    const button = document.getElementById('teacher-login-btn');
+    const statusEl = document.getElementById('login-status');
+
+    function setStatus(message, tone = '') {
+      statusEl.textContent = message;
+      statusEl.className = `login-status${tone ? ` is-${tone}` : ''}`;
+    }
+
+    try {
+      const saved = localStorage.getItem('adminEmail') || '';
+      if (saved) accountInput.value = saved;
+    } catch (_) {}
+
+    bindTeacherAuthState((user) => {
+      if (user) {
+        setStatus('登入狀態已確認，正在前往主控台…', 'success');
+        window.location.replace('./dashboard.html#teacher-system');
+      }
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = accountInput.value.trim();
+      const password = passwordInput.value;
+      if (!email || !password) {
+        setStatus('請先輸入老師帳號與密碼。', 'error');
+        return;
+      }
+      button.disabled = true;
+      setStatus('登入中，正在驗證老師帳號…');
+      try {
+        await teacherLogin(email, password);
+        try { localStorage.setItem('adminEmail', email); } catch (_) {}
+        setStatus('登入成功，正在前往主控台…', 'success');
+        window.location.replace('./dashboard.html#teacher-system');
+      } catch (error) {
+        setStatus(mapTeacherLoginError(error), 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

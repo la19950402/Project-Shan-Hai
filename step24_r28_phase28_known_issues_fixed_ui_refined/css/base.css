@@ -1,0 +1,12 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { font-family: "Noto Sans TC", system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+body { min-height: 100vh; color: #fff; overflow-x: hidden; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+.hidden { display: none !important; }
+.muted { color: var(--text-muted); }
+pre { white-space: pre-wrap; word-break: break-word; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.45); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }

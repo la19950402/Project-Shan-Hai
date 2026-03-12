@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>山海異獸誌 v2 穩定整合版</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/theme.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+</head>
+<body>
+  <div class="app-shell old-theme-shell">
+    <header class="hero tech-panel">
+      <div>
+        <div class="hero-kicker tech-font">Shan Hai v2 / 舊版規則整合中</div>
+        <h1>山海異獸誌新版分檔版</h1>
+        <p class="muted hero-subtitle">目標不是重做介面，而是把舊版老師主流程、批量掃描、卡務與學生正式頁，逐步搬進新版並保持操作習慣一致。</p>
+      </div>
+      <div class="hero-status-bar"><span class="hero-badge">舊版規則優先</span><span class="hero-badge">新版分檔承載</span><span class="hero-badge" id="heroBuildTag">build -</span></div>
+      <div class="hero-actions">
+        <button id="btnTeacherLogin" type="button" class="btn btn-solid">老師登入</button>
+        <button id="btnTeacherLogout" type="button" class="btn">登出系統</button>
+        <button id="btnGoTeacherEntryFlow" type="button" class="btn">老師入口</button>
+        <button id="btnGoStudentEntryFlow" type="button" class="btn">學生入口</button>
+      </div>
+      <div class="entry-flow-strip">
+        <div class="entry-flow-card"><strong>老師端</strong><span>專屬登入封面 → 老師系統頁 → 查卡號或掃描卡片 → 教師版學生狀態頁</span></div>
+        <div class="entry-flow-card"><strong>學生端</strong><span>掃描已寫好學生網址的 NTAG → 學生狀態頁 → 每日挑戰 / Boss / 收藏 / AI</span></div>
+      </div>
+    </header>
+
+    <section class="tech-panel compact-panel">
+      <div class="menu-section-title tech-font">系統總覽</div>
+      <div class="summary-strip">
+        <div><strong>狀態：</strong><span data-bind="opBusy">待命</span></div>
+        <div><strong>目前動作：</strong><span data-bind="opAction">系統待命</span></div>
+        <div><strong>最後同步：</strong><span data-bind="opLastSync">-</span></div>
+        <div><strong>老師 session：</strong><span id="teacherSessionText">未登入</span></div>
+        <div><strong>批量摘要：</strong><span data-bind="batchSummary">總數 0 / 成功 0 / 失敗 0 / 跳過 0</span></div>
+      </div>
+    </section>
+
+    <section class="tech-panel">
+      <div class="menu-sections">
+        <div class="menu-section">
+          <div class="menu-section-title tech-font">老師主流程</div>
+          <div class="menu-grid">
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="teacherAccessSection"><span class="btn-main">🔎 查找學生</span><span class="btn-sub">卡序 / NTAG / Token</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="teacherStudentOpsSection"><span class="btn-main">🧑‍🏫 老師操作頁</span><span class="btn-sub">加分 / 狀態 / 事件</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="shopVoucherSection"><span class="btn-main">🛍️ 商城與憑證</span><span class="btn-sub">購買 / 兌現 / 實體獎勵</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="cardAdminSection"><span class="btn-main">💳 卡片管理</span><span class="btn-sub">補卡 / 停用 / 綁定 NTAG</span></button>
+          </div>
+        </div>
+        <div class="menu-section">
+          <div class="menu-section-title tech-font">批量與系統區</div>
+          <div class="menu-grid">
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="batchWorkflowSection"><span class="btn-main">⚡ 批量模式</span><span class="btn-sub">學生卡 → 道具卡 10 秒循環</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="forgeSection"><span class="btn-main">📡 道具卡鑄造</span><span class="btn-sub">加分卡 / 狀態卡</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="teacherLogsSection"><span class="btn-main">📜 事件紀錄</span><span class="btn-sub">操作回饋 / 學習問題</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="studentCoreSection"><span class="btn-main">🐉 學生正式頁骨架</span><span class="btn-sub">每日訓練 / Boss / AI</span></button>
+          </div>
+        </div>
+        <div class="menu-section menu-footer">
+          <div class="menu-section-title tech-font">獨立系統區</div>
+          <div class="menu-grid menu-grid-bottom">
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="systemZoneSection"><span class="btn-main">📝 題庫 / 命題</span><span class="btn-sub">Boss / 題庫 / 批次工具</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="systemZoneSection"><span class="btn-main">🧰 系統管理</span><span class="btn-sub">學習輔助 / 同步 / 登出</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="legacy-layout">
+      <aside class="tech-panel legacy-cockpit" id="legacyCockpitSection">
+        <div class="menu-section-title tech-font">舊版主控台導覽</div>
+        <div class="legacy-cockpit-kicker">本輪先把新版主控區排版、快捷入口與系統區切頁做得更接近舊版。</div>
+        <div class="legacy-cockpit-meta">
+          <div><strong>版本：</strong><span id="buildTagText">-</span></div>
+          <div><strong>目前階段：</strong><span id="buildPhaseText">老師主控台 / 系統區排版對齊</span></div>
+          <div><strong>當前學生：</strong><span data-bind="name">未載入</span></div>
+        </div>
+        <div class="legacy-cockpit-group">
+          <div class="menu-section-title tech-font">快速操作</div>
+          <div class="legacy-cockpit-buttons">
+            <button type="button" class="btn btn-solid quick-open" data-click-target="btnOpenTeacherActionModal">老師操作總覽</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenScoreModal">舊版式加分視窗</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenStatusModal">狀態 / 學習問題</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenLogsModal">事件紀錄</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenSystemSummaryModal">系統區總覽</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenStudentModal">學生頁預覽</button>
+          </div>
+        </div>
+        <div class="legacy-cockpit-group">
+          <div class="menu-section-title tech-font">主控區跳轉</div>
+          <div class="legacy-anchor-list">
+            <button type="button" class="btn menu-nav" data-nav-target="teacherAccessSection">查找學生與登入</button>
+            <button type="button" class="btn menu-nav" data-nav-target="teacherStudentOpsSection">老師操作頁</button>
+            <button type="button" class="btn menu-nav" data-nav-target="batchWorkflowSection">批量模式</button>
+            <button type="button" class="btn menu-nav" data-nav-target="shopVoucherSection">商城 / 憑證</button>
+            <button type="button" class="btn menu-nav" data-nav-target="systemZoneSection">獨立系統區</button>
+            <button type="button" class="btn menu-nav" data-nav-target="studentCoreSection">學生正式頁骨架</button>
+          </div>
+        </div>
+        <div class="legacy-cockpit-group">
+          <div class="menu-section-title tech-font">舊版對齊提示</div>
+          <div class="legacy-callout">本輪不改動你已經能用的資料流，先把新版頁面收斂成較像舊版的主控版型：左側導覽、右側工作區、系統區切頁、快速視窗入口。</div>
+        </div>
+      </aside>
+
+      <main class="workspace-grid">
+      <section class="tech-panel" id="teacherAccessSection">
+        <div class="section-chrome"><h2 class="tech-font">🔎 查找學生 / 老師入口</h2><span class="section-chip">P0 入口</span></div>
+        <div class="entry-flow-inline">舊版進入邏輯：老師先從專屬登入封面進系統頁，再用卡序或掃描卡片進入「教師版學生狀態頁」。</div>
+        <div class="field-grid two-col">
+          <div class="field-row"><label for="teacherEmail">老師帳號</label><input id="teacherEmail" type="email" placeholder="teacher@example.com" /></div>
+          <div class="field-row"><label for="teacherPassword">老師密碼</label><input id="teacherPassword" type="password" placeholder="請輸入密碼" /></div>
+          <div class="field-row"><label for="serialInput">學生卡序（正式以 serial 為主）</label><input id="serialInput" type="text" placeholder="例如 001" /></div>
+          <div class="field-row"><label for="ntagInput">學生 ntag / token</label><input id="ntagInput" type="text" placeholder="可用 ntag 或 token 查找學生" /></div>
+          <div class="field-row span-2"><label for="tokenInput">學生 token（可選）</label><input id="tokenInput" type="text" placeholder="若要直接驗 student_pages，可輸入 token" /></div>
+        </div>
+        <div class="button-row wrap">
+          <button id="btnLoadStudent" type="button" class="btn btn-solid">依卡序載入</button>
+          <button id="btnLoadByNtag" type="button" class="btn">依 ntag 載入</button>
+          <button id="btnLoadByToken" type="button" class="btn">用 token 載入</button>
+        </div>
+        <div class="glass-panel">
+          <h3 class="tech-font">老師可操作範圍</h3>
+          <pre id="teacherAccessScopeText">尚未載入老師權限範圍</pre>
+        </div>
+        <div class="result-panel glass-panel">
+          <h3 class="tech-font">目前學生摘要</h3>
+          <div class="status-grid">
+            <div class="status-card status-ok"><div class="status-label">卡序</div><div class="status-value" data-bind="serial">未載入</div><div class="status-hint">正式欄位 serial</div></div>
+            <div class="status-card status-ok"><div class="status-label">暱稱</div><div class="status-value" data-bind="name">未載入</div><div class="status-hint">正式顯示名稱</div></div>
+            <div class="status-card status-neutral"><div class="status-label">金幣</div><div class="status-value" data-bind="coins">0</div><div class="status-hint">資料庫同步</div></div>
+            <div class="status-card status-neutral"><div class="status-label">總 XP</div><div class="status-value" data-bind="xp">0</div><div class="status-hint">成長核心</div></div>
+            <div class="status-card status-neutral"><div class="status-label">AI 夥伴</div><div class="status-value" data-bind="guideMode">智者貓咪</div><div class="status-hint">guide_mode 真實來源</div></div>
+            <div class="status-card status-neutral"><div class="status-label">來源</div><div class="status-value" data-bind="source">-</div><div class="status-hint">students / student_pages</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-panel" id="teacherStudentOpsSection">
+        <div class="section-chrome"><h2 class="tech-font">🧑‍🏫 老師學生操作頁</h2><span class="section-chip">同頁操作</span></div>
+        <div class="result-summary">依舊版老師端主流程：先查找學生，再在同一頁進行加分、扣分/懲罰、狀態調整、商品、憑證、NTAG、事件紀錄與版本設定。</div>
+        <div class="legacy-layout teacher-ops-layout">
+          <aside class="glass-panel legacy-cockpit teacher-ops-cockpit">
+            <div class="tech-font">老師操作艙</div>
+            <div class="legacy-cockpit-kicker">把舊版的工作順序固定在同一頁：查學生 → 選操作面板 → 寫入資料 → 回讀驗證 → 同步更新畫面。</div>
+            <div class="legacy-cockpit-meta">
+              <div><strong>目前學生</strong><div id="legacyStudentMetaText">未載入學生</div></div>
+              <div><strong>加分面板</strong><div id="legacyCurrentPanelText">一般學習加分面板</div></div>
+              <div><strong>active token</strong><div id="legacyCurrentTokenText">未綁定</div></div>
+              <div><strong>學生頁網址</strong><div id="legacyStudentUrlPreview">請先載入學生</div></div>
+              <div><strong>版本</strong><div id="legacyBuildTagText">step24</div></div>
+            </div>
+            <div class="legacy-cockpit-group">
+              <div class="tech-font">舊版快捷視窗</div>
+              <div class="legacy-cockpit-buttons">
+                <button type="button" class="btn btn-solid quick-open" data-click-target="btnOpenTeacherActionModal">老師操作總覽</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenScoreModal">加分視窗</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenStatusModal">狀態視窗</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenLogsModal">事件紀錄視窗</button>
+              </div>
+            </div>
+            <div class="legacy-cockpit-group">
+              <div class="tech-font">老師主流程捷徑</div>
+              <div class="legacy-anchor-list">
+                <button type="button" class="btn" data-nav-target="teacherStudentOpsSection">老師操作頁</button>
+                <button type="button" class="btn" data-nav-target="shopVoucherSection">商城 / 憑證</button>
+                <button type="button" class="btn" data-nav-target="cardAdminSection">卡片管理 / 補卡</button>
+                <button type="button" class="btn" data-nav-target="batchWorkflowSection">批量掃描</button>
+                <button type="button" class="btn" data-nav-target="teacherLogsSection">事件紀錄</button>
+                <button type="button" class="btn" data-nav-target="systemZoneSection">獨立系統區</button>
+              </div>
+            </div>
+          </aside>
+          <div class="teacher-ops-workspace">
+            <div class="button-row wrap legacy-quick-row">
+              <button type="button" class="btn btn-solid" id="btnOpenTeacherActionModal">開啟老師操作總覽</button>
+              <button type="button" class="btn" id="btnOpenScoreModal">舊版式加分視窗</button>
+              <button type="button" class="btn" id="btnOpenStatusModal">狀態 / 學習問題視窗</button>
+              <button type="button" class="btn" id="btnOpenLogsModal">事件紀錄視窗</button>
+            </div>
+            <div class="glass-panel teacher-workflow-dock">
+              <div class="section-chrome"><h3 class="tech-font">老師同頁工作列</h3><span class="section-chip">無痛接軌</span></div>
+              <div class="teacher-workflow-copy">查到學生後直接留在同一頁操作，不用重新理解新版分區。先選工作頁籤，再依舊版習慣快速完成加分、狀態、商品、卡務與紀錄查看。</div>
+              <div class="teacher-op-tabs" id="teacherOpTabs">
+                <button type="button" class="btn teacher-op-tab is-active" data-op-pane="score">加分 / 改名 / AI</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="status">狀態 / 學習問題</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="shop">商品 / 憑證</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="card">卡務 / NTAG</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="logs">事件紀錄</button>
+              </div>
+              <div class="teacher-op-inline-status" id="teacherOpInlineStatus">目前頁籤：加分 / 改名 / AI</div>
+            </div>
+            <div class="status-grid">
+              <div class="status-card status-ok"><div class="status-label">暱稱</div><div class="status-value" data-bind="nickname">未載入</div><div class="status-hint">正式顯示名稱</div></div>
+              <div class="status-card status-neutral"><div class="status-label">年級 / 班級</div><div class="status-value" data-bind="grade">-</div><div class="status-hint">共用核心資訊</div></div>
+              <div class="status-card status-neutral"><div class="status-label">稱號</div><div class="status-value" data-bind="title">-</div><div class="status-hint">教師與學生共用摘要</div></div>
+              <div class="status-card status-neutral"><div class="status-label">狀態</div><div class="status-value" data-bind="status">健康</div><div class="status-hint">負面狀態同步</div></div>
+            </div>
+            <pre id="teacherStudentAttrsText" data-bind="attrs">-</pre>
+            <div class="glass-panel teacher-flow-panel">
+              <div class="section-chrome"><h3 class="tech-font">舊版流程工作列</h3><span class="section-chip" id="legacyPanelBadge">一般面板</span></div>
+              <div class="legacy-callout">先選擇符合學生班別的事件面板，再用同頁按鈕直接入帳。這一區保持舊版「看得到整條流程」的手感，但真正寫入仍走新版 services / domain。</div>
+              <div class="legacy-flow-strip" id="legacyFlowStrip">
+                <div class="legacy-flow-step"><span class="legacy-flow-index">1</span><div><strong>查找學生</strong><small id="legacyFlowStudent">尚未載入學生</small></div></div>
+                <div class="legacy-flow-step"><span class="legacy-flow-index">2</span><div><strong>選擇事件面板</strong><small id="legacyFlowPanel">一般學習加分面板</small></div></div>
+                <div class="legacy-flow-step"><span class="legacy-flow-index">3</span><div><strong>同頁操作</strong><small id="legacyFlowAction">可直接加分 / 狀態 / 商品 / NTAG</small></div></div>
+                <div class="legacy-flow-step"><span class="legacy-flow-index">4</span><div><strong>結果回饋</strong><small id="legacyFlowResult">尚未執行寫入驗證</small></div></div>
+              </div>
+              <div class="button-row wrap teacher-panel-switch-row">
+                <button type="button" class="btn legacy-panel-switch" data-action-panel="general">一般學習</button>
+                <button type="button" class="btn legacy-panel-switch" data-action-panel="support">學習扶助</button>
+                <button type="button" class="btn legacy-panel-switch" data-action-panel="science">科展團隊</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenScoreModal">用舊版視窗檢視面板</button>
+              </div>
+              <div id="actionGridModeHint" class="action-help-note">目前使用一般學習加分面板。</div>
+              <div id="legacyActionHintText" class="action-help-note">面板提示會顯示在這裡。</div>
+              <div id="legacyActionBoard"></div>
+              <div class="button-row wrap legacy-inline-shortcuts">
+                <button type="button" class="btn btn-solid" id="openDebuffBtn">狀態調整</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenLogsModal">查看事件紀錄</button>
+                <button type="button" class="btn" data-nav-target="shopVoucherSection">商品 / 憑證</button>
+                <button type="button" class="btn" data-nav-target="cardAdminSection">NTAG / 補卡</button>
+              </div>
+            </div>
+            <div class="subsection-grid">
+              <div class="glass-panel teacher-op-pane is-active" data-op-pane="score">
+                <h3 class="tech-font">✏️ 手動加分 / 改名 / AI</h3>
+                <div class="field-row"><label for="renameInput">暱稱 / 顯示名稱</label><input id="renameInput" type="text" placeholder="輸入新名字" /></div>
+                <div class="button-row"><button id="btnRename" type="button" class="btn">儲存新名字</button></div>
+                <div class="field-row"><label for="guideModeSelect">AI 夥伴</label><select id="guideModeSelect"><option value="cat">智者貓咪</option><option value="baize">白澤</option><option value="neutral">中性助教</option></select></div>
+                <div class="button-row"><button id="btnSaveGuideMode" type="button" class="btn">儲存 AI 夥伴</button></div>
+                <div class="field-row"><label for="scorePresetSelect">舊版加分預設</label><select id="scorePresetSelect"><option value="">手動輸入</option></select></div>
+                <div class="field-row"><label for="scoreReasonInput">加分事件</label><input id="scoreReasonInput" type="text" placeholder="例如：課堂表現優良" /></div>
+                <div class="field-grid two-col compact-grid">
+                  <div class="field-row"><label for="scoreValueInput">XP</label><input id="scoreValueInput" type="number" value="1" min="1" /></div>
+                  <div class="field-row"><label for="scoreAttrSelect">屬性</label><select id="scoreAttrSelect"><option value="metal">金</option><option value="wood">木</option><option value="water">水</option><option value="fire">火</option><option value="earth">土</option></select></div>
+                </div>
+                <div class="button-row wrap">
+                  <button id="btnPreviewScore" type="button" class="btn btn-solid">預覽加分</button>
+                  <button id="btnApplyScoreDirect" type="button" class="btn">直接入帳</button>
+                </div>
+              </div>
+
+              <div class="glass-panel teacher-op-pane" data-op-pane="status">
+                <h3 class="tech-font">☠️ 狀態調整 / 學習問題</h3>
+                <div class="field-row"><label for="statusPresetSelect">負面狀態</label><select id="statusPresetSelect"><option value="Poison">中毒</option><option value="Frozen">冰凍</option><option value="Paralyzed">麻痺</option><option value="Confusion">混亂</option></select></div>
+                <div class="field-row"><label for="statusStacksInput">層數</label><input id="statusStacksInput" type="number" value="1" min="1" max="5" /></div>
+                <div class="field-row"><label for="statusReasonInput">學習問題 / 狀態原因</label><input id="statusReasonInput" type="text" placeholder="例如：作業缺交、上課分心" /></div>
+                <div class="button-row"><button id="btnApplyStatus" type="button" class="btn">寫入負面狀態</button></div>
+                <div id="previewPanel" class="preview-panel hidden">
+                  <h3>確認加分</h3>
+                  <p id="previewText">尚未準備</p>
+                  <div class="button-row wrap">

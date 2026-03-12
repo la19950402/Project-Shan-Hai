@@ -1,0 +1,444 @@
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+  deleteField,
+  collection,
+  getDocs,
+  limit,
+  query,
+  where,
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { COLLECTIONS } from '../config.js?v=step24-r28-card-batch-workflow-20260312h';
+import { db } from './firebase.js?v=step24-r28-card-batch-workflow-20260312h';
+import { normalizeSerial } from '../domain/serial.js?v=step24-r28-card-batch-workflow-20260312h';
+import { currentState, setCurrentStudent, resetCurrentStudent, setUiBusy, markUiSynced } from '../state.js?v=step24-r28-card-batch-workflow-20260312h';
+import { queueStudentWrite } from './save-queue.js?v=step24-r28-card-batch-workflow-20260312h';
+
+
+function buildLogKey(log = {}) {
+  const action = String(log?.action_type || '').trim();
+  const rewardId = String(log?.reward_event_id || log?.log_id || '').trim();
+  const detail = String(log?.detail || '').trim();
+  const timestamp = Number(log?.timestamp || 0) || 0;
+
+  if (rewardId) return `${action}::${rewardId}`;
+  return `${action}::${detail}::${timestamp}`;
+}
+
+export function dedupeLogs(logs = []) {
+  const source = Array.isArray(logs) ? logs : [];
+  const seen = new Set();
+  const output = [];
+
+  for (const item of source) {
+    if (!item || typeof item !== 'object') continue;
+    const key = buildLogKey(item);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    output.push(item);
+  }
+
+  return output.slice(-200);
+}
+
+
+function buildRewardEventKey(item = {}) {
+  return String(item?.eventId || item?.id || '').trim();
+}
+
+export function dedupeRewardEvents(events = []) {
+  const source = Array.isArray(events) ? events : [];
+  const seen = new Set();
+  const output = [];
+  for (const item of source) {
+    if (!item || typeof item !== 'object') continue;
+    const key = buildRewardEventKey(item) || JSON.stringify(item);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    output.push(item);
+  }
+  return output.slice(-200);
+}
+
+export function dedupeRewardSettledIds(ids = []) {
+  const source = Array.isArray(ids) ? ids : [];
+  const output = [];
+  const seen = new Set();
+  for (const item of source) {
+    const key = String(item || '').trim();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    output.push(key);
+  }
+  return output.slice(-400);
+}
+
+export function applyDataMigration(raw = {}) {
+  const next = JSON.parse(JSON.stringify(raw || {}));
+  const serial = normalizeSerial(next.serial || next.card_seq || next.cardSeq);
+  if (serial) {
+    next.serial = serial;
+    next.card_seq = serial;
+  }
+  next.name = String(next.name || next.displayName || '').trim() || '未命名學生';
+  next.coins = Number(next.coins) || 0;
+  next.totalXP = Number(next.totalXP) || 0;
+  next.collection = Array.isArray(next.collection) ? next.collection : [];
+  next.reward_events = backfillTeacherRewardEvents(next);
+  next.reward_settled_ids = dedupeRewardSettledIds(Array.isArray(next.reward_settled_ids) ? next.reward_settled_ids : []);
+  next.logs = dedupeLogs(Array.isArray(next.logs) ? next.logs : []);
+  next.guide_mode = String(next.guide_mode || 'cat').trim() || 'cat';
+  if (next.guide_mode === 'cat_sage') next.guide_mode = 'cat';
+  if (!['cat', 'baize', 'neutral'].includes(next.guide_mode)) next.guide_mode = 'cat';
+  next.guide_mode_locked = next.guide_mode_locked !== false;
+  next.attributes = typeof next.attributes === 'object' && next.attributes ? next.attributes : {};
+  return next;
+}
+
+
+function normalizeTeacherRewardEventFromLog(log = {}, fallbackIndex = 0) {
+  const actionType = String(log?.action_type || '').trim();
+  if (!['teacher_score', 'teacher_status', 'batch_action'].includes(actionType)) return null;
+  const timestamp = Number(log?.timestamp || 0) || Date.now();
+  const detail = String(log?.detail || '').trim();
+  const rewardEventId = String(log?.reward_event_id || log?.log_id || `${actionType}:${timestamp}:${fallbackIndex}`).trim();
+  const normalized = {
+    eventId: rewardEventId,
+    id: rewardEventId,
+    type: actionType === 'batch_action' ? 'teacher_score' : actionType,
+    category: 'teacher_reward',
+    source: String(log?.source_channel || (actionType === 'batch_action' ? 'legacy_batch' : 'legacy_teacher')).trim() || 'legacy_teacher',
+    timestamp,
+    settled: true,
+    detail,
+  };
+
+  const attrMatch = detail.match(/\(([a-zA-Z_]+)\)\s*$/);
+  if (attrMatch?.[1]) normalized.attrKey = String(attrMatch[1]).trim();
+  const xpMatch = detail.match(/\+(\d+)\s*XP/i);
+  if (xpMatch?.[1]) {
+    normalized.amount = Number(xpMatch[1]) || 0;
+    normalized.xpAdded = normalized.amount;
+  }
+  const statusMatch = detail.match(/\[教師狀態\]\s*([^+｜]+)/);
+  if (statusMatch?.[1]) normalized.statusLabel = String(statusMatch[1]).trim();
+  const stacksMatch = detail.match(/\+(\d+)｜/);
+  if (stacksMatch?.[1] && actionType === 'teacher_status') normalized.stacks = Number(stacksMatch[1]) || 0;
+  const reasonMatch = detail.match(/^\[(?:教師加分|批量加分|教師狀態)\]\s*(.+?)(?:\s*\+\d+\s*XP.*|\s*\+\d+｜.*)?$/);
+  if (reasonMatch?.[1]) normalized.reason = String(reasonMatch[1]).trim();
+  if (!normalized.reason && detail) normalized.reason = detail.replace(/^\[[^\]]+\]\s*/, '').trim();
+  return normalized;
+}
+
+function backfillTeacherRewardEvents(raw = {}) {
+  const existing = Array.isArray(raw?.reward_events) ? raw.reward_events : [];
+  const synthesized = [];
+  const logs = Array.isArray(raw?.logs) ? raw.logs : [];
+  logs.forEach((item, idx) => {
+    const normalized = normalizeTeacherRewardEventFromLog(item, idx);
+    if (normalized) synthesized.push(normalized);
+  });
+  return dedupeRewardEvents([...existing, ...synthesized]);
+}
+
+function buildSerialCandidates(rawSerial) {
+  const raw = String(rawSerial ?? '').trim();
+  const digits = raw.replace(/[^0-9]/g, '');
+  const normalized = normalizeSerial(raw);
+  const values = [normalized, digits, raw].filter(Boolean);
+  return [...new Set(values)];
+}
+
+async function readStudentDocById(docId) {
+  const safeId = String(docId ?? '').trim();
+  if (!safeId) return null;
+  const snap = await getDoc(doc(db, COLLECTIONS.students, safeId));
+  return snap.exists() ? { id: snap.id, data: snap.data() } : null;
+}
+
+async function readStudentDoc(serial) {
+  const candidates = buildSerialCandidates(serial);
+
+  for (const candidate of candidates) {
+    const hit = await readStudentDocById(candidate);
+    if (hit) return hit;
+  }
+
+  const fieldQueries = [
+    ['serial', '=='],
+    ['card_seq', '=='],
+    ['cardSeq', '=='],
+  ];
+
+  for (const candidate of candidates) {
+    for (const [field, op] of fieldQueries) {
+      const qs = await getDocs(query(collection(db, COLLECTIONS.students), where(field, op, candidate), limit(1)));
+      if (!qs.empty) {
+        const snap = qs.docs[0];
+        return { id: snap.id, data: snap.data() };
+      }
+    }
+  }
+
+  return null;
+}
+
+async function readStudentPageDoc(token) {
+  const safeToken = String(token || '').trim();
+  if (!safeToken) return null;
+  const snap = await getDoc(doc(db, COLLECTIONS.studentPages, safeToken));
+  return snap.exists() ? snap.data() : null;
+}
+
+
+
+export async function resolveSerialByTokenTag(rawTag, { requireActive = true } = {}) {
+  const safeTag = String(rawTag || '').trim();
+  if (!safeTag) throw new Error('請輸入 ntag / token');
+
+  const direct = await getDoc(doc(db, COLLECTIONS.tokens, safeTag));
+  if (direct.exists()) {
+    const data = direct.data() || {};
+    if (!requireActive || data.active !== false) {
+      const serial = normalizeSerial(data.serial || data.card_seq || data.cardSeq);
+      if (serial) return { serial, token: safeTag, tokenDoc: data };
+    }
+  }
+
+  const qs = await getDocs(query(collection(db, COLLECTIONS.tokens), where('ntagId', '==', safeTag), limit(1)));
+  if (!qs.empty) {
+    const snap = qs.docs[0];
+    const data = snap.data() || {};
+    if (!requireActive || data.active !== false) {
+      const serial = normalizeSerial(data.serial || data.card_seq || data.cardSeq);
+      if (serial) return { serial, token: snap.id, tokenDoc: data };
+    }
+  }
+
+  throw new Error('找不到對應的 ntag / token');
+}
+
+export async function getActiveTokenForSerial(rawSerial) {
+  const serial = normalizeSerial(rawSerial);
+  if (!serial) return null;
+  if (currentState.currentSerial === serial && currentState.currentToken) return currentState.currentToken;
+
+  try {
+    const studentHit = await readStudentDoc(serial);
+    const studentRaw = studentHit?.data || null;
+    const hinted = String(studentRaw?.active_token || studentRaw?.page_token || studentRaw?.token || '').trim();
+    if (hinted) return hinted;
+  } catch (_error) {
+    // ignore
+  }
+
+  try {
+    const tokenFields = ['serial', 'card_seq', 'cardSeq'];
+    for (const field of tokenFields) {
+      const qs = await getDocs(query(collection(db, COLLECTIONS.tokens), where(field, '==', serial), where('active', '==', true), limit(1)));
+      if (!qs.empty) return qs.docs[0].id;
+    }
+  } catch (_error) {
+    // ignore
+  }
+
+  return null;
+}
+
+export async function loadStudentByNtag(rawTag) {
+  const resolved = await resolveSerialByTokenTag(rawTag, { requireActive: true });
+  const token = resolved.token || await getActiveTokenForSerial(resolved.serial) || null;
+  if (token) return loadStudentByToken(token);
+  return loadStudentBySerial(resolved.serial);
+}
+export async function fetchStudentBySerial(rawSerial) {
+  const serial = normalizeSerial(rawSerial);
+  if (!serial) throw new Error('卡序格式不正確');
+
+  const studentHit = await readStudentDoc(serial);
+  if (!studentHit?.data) throw new Error(`找不到學生 ${serial}`);
+
+  const migrated = applyDataMigration({
+    ...studentHit.data,
+    serial,
+    card_seq: serial,
+  });
+
+  return migrated;
+}
+
+function mergeStudentAndPageData(studentRaw = null, pageRaw = null, { serial = null, token = null } = {}) {
+  const resolvedSerial = normalizeSerial(serial || pageRaw?.serial || pageRaw?.card_seq || studentRaw?.serial || studentRaw?.card_seq);
+  const safeToken = String(token || pageRaw?.active_token || pageRaw?.page_token || studentRaw?.active_token || studentRaw?.page_token || '').trim();
+  const mergedRaw = {
+    ...(studentRaw || {}),
+    ...(pageRaw || {}),
+  };
+  if (resolvedSerial) {
+    mergedRaw.serial = resolvedSerial;
+    mergedRaw.card_seq = resolvedSerial;
+  }
+  if (safeToken) {
+    mergedRaw.active_token = safeToken;
+    mergedRaw.page_token = safeToken;
+  }
+  return applyDataMigration(mergedRaw);
+}
+
+export async function fetchStudentByToken(token) {
+  const safeToken = String(token || '').trim();
+  if (!safeToken) throw new Error('請輸入 token');
+
+  const pageRaw = await readStudentPageDoc(safeToken);
+  if (!pageRaw) throw new Error('找不到 student_pages token');
+
+  const serial = normalizeSerial(pageRaw?.serial || pageRaw?.card_seq);
+  if (!serial) throw new Error('student_pages 缺少 serial');
+
+  const studentHit = await readStudentDoc(serial);
+  const studentRaw = studentHit?.data || null;
+  const merged = mergeStudentAndPageData(studentRaw, pageRaw, { serial, token: safeToken });
+
+  return { merged, serial, token: safeToken };
+}
+
+export async function fetchValidationSnapshot({ serial, token = null }) {
+  const resolvedSerial = normalizeSerial(serial);
+  if (!resolvedSerial && !String(token || '').trim()) throw new Error('fetchValidationSnapshot 缺少 serial / token');
+
+  const safeToken = String(token || '').trim();
+  let pageRaw = null;
+  if (safeToken) {
+    pageRaw = await readStudentPageDoc(safeToken);
+  }
+
+  const inferredSerial = normalizeSerial(resolvedSerial || pageRaw?.serial || pageRaw?.card_seq);
+  let studentHit = null;
+  if (inferredSerial) studentHit = await readStudentDoc(inferredSerial);
+  const studentRaw = studentHit?.data || null;
+  const finalSerial = normalizeSerial(inferredSerial || studentRaw?.serial || studentRaw?.card_seq);
+  if (!finalSerial) throw new Error('fetchValidationSnapshot 找不到 canonical serial');
+
+  return {
+    serial: finalSerial,
+    token: safeToken || String(studentRaw?.active_token || studentRaw?.page_token || pageRaw?.active_token || pageRaw?.page_token || '').trim() || null,
+    student: applyDataMigration({ ...(studentRaw || {}), serial: finalSerial, card_seq: finalSerial }),
+    page: pageRaw ? applyDataMigration({ ...pageRaw, serial: finalSerial, card_seq: finalSerial }) : null,
+    merged: mergeStudentAndPageData(studentRaw, pageRaw, { serial: finalSerial, token: safeToken || null }),
+  };
+}
+
+export async function fetchCanonicalStudent({ serial, token = null }) {
+  const safeToken = String(token || '').trim();
+  if (safeToken) {
+    return fetchStudentByToken(safeToken);
+  }
+  const merged = await fetchStudentBySerial(serial);
+  return { merged, serial: normalizeSerial(serial), token: null };
+}
+
+export async function loadStudentBySerial(rawSerial) {
+  const student = await fetchStudentBySerial(rawSerial);
+  setCurrentStudent(student, { serial: student.serial });
+  markUiSynced('已載入學生資料');
+  return student;
+}
+
+export async function loadStudentByToken(token) {
+  const { merged, serial, token: safeToken } = await fetchStudentByToken(token);
+  setCurrentStudent(merged, { serial, token: safeToken });
+  markUiSynced('已用 token 載入學生資料');
+  return merged;
+}
+
+export async function refreshCurrentStudent() {
+  if (currentState.currentToken) {
+    return loadStudentByToken(currentState.currentToken);
+  }
+  if (currentState.currentSerial) {
+    return loadStudentBySerial(currentState.currentSerial);
+  }
+  throw new Error('目前沒有可刷新的學生');
+}
+
+export async function saveStudentData(student, { token = null, source = 'manual', setCurrent = true, refreshAfterSave = true } = {}) {
+  const safe = applyDataMigration(student);
+  const serial = normalizeSerial(safe.serial || safe.card_seq);
+  if (!serial) throw new Error('儲存時缺少 serial');
+
+  safe.serial = serial;
+  safe.card_seq = serial;
+  safe.updatedAt = Date.now();
+
+  return queueStudentWrite(serial, async () => {
+    const pageToken = String(token || safe.active_token || safe.page_token || '').trim();
+    setUiBusy(true, `寫入中：${source}`);
+    try {
+      await setDoc(
+        doc(db, COLLECTIONS.students, serial),
+        {
+          ...safe,
+          updatedAt: safe.updatedAt,
+          serverUpdatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+
+      if (pageToken) {
+        await setDoc(
+          doc(db, COLLECTIONS.studentPages, pageToken),
+          {
+            ...safe,
+            logs: deleteField(),
+            active_token: pageToken,
+            page_token: pageToken,
+            updatedAt: safe.updatedAt,
+            serverUpdatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+      }
+
+      let finalStudent = safe;
+      if (refreshAfterSave) {
+        const canonical = await fetchValidationSnapshot({ serial, token: pageToken || null });
+        finalStudent = canonical.merged;
+      }
+
+      if (setCurrent || currentState.currentSerial === serial) {
+        setCurrentStudent(finalStudent, { serial, token: pageToken || null });
+      }
+
+      markUiSynced(`已完成：${source}`);
+      return finalStudent;
+    } finally {
+      setUiBusy(false);
+    }
+  });
+}
+
+export async function renameCurrentStudent(nextName, currentStudent, options = {}) {
+  const name = String(nextName || '').trim();
+  if (!name) throw new Error('請輸入新名字');
+  if (!currentStudent) throw new Error('尚未載入學生');
+
+  const next = applyDataMigration(currentStudent);
+  next.name = name;
+  return saveStudentData(next, options);
+}
+
+export async function saveGuideMode(currentStudent, guideMode, options = {}) {
+  if (!currentStudent) throw new Error('尚未載入學生');
+  const next = applyDataMigration(currentStudent);
+  const rawMode = String(guideMode || 'cat').trim() || 'cat';
+  const safeMode = rawMode === 'cat_sage' ? 'cat' : rawMode;
+  next.guide_mode = ['cat', 'baize', 'neutral'].includes(safeMode) ? safeMode : 'cat';
+  next.guide_mode_locked = true;
+  return saveStudentData(next, options);
+}
+
+export function clearLoadedStudent() {
+  resetCurrentStudent();
+}

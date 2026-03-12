@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>山海異獸誌｜教師主控台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/theme.css" />
+  <link rel="stylesheet" href="./css/components.css" />
+</head>
+<body>
+  <div class="app-shell old-theme-shell">
+    <header class="hero tech-panel">
+      <div>
+        <div class="hero-kicker tech-font">Shan Hai Academy</div>
+        <h1>山海異獸誌｜山海學園</h1>
+        <p class="muted hero-subtitle">全螢幕深色主題主控台，透過卡片入口與彈出視窗串起老師端與學生端操作。</p>
+      </div>
+      <div class="hero-status-bar"><span class="hero-badge" id="heroBuildTag">build -</span></div>
+      <div class="hero-actions">
+        <button id="btnTeacherLogin" type="button" class="btn btn-solid">老師登入</button>
+        <button id="btnTeacherLogout" type="button" class="btn">登出系統</button>
+        <button id="btnGoTeacherEntryFlow" type="button" class="btn">老師入口</button>
+        <button id="btnGoStudentEntryFlow" type="button" class="btn">學生入口</button>
+        
+      </div>
+      
+    </header>
+
+    <section class="tech-panel compact-panel page-tab-shell">
+      <div class="page-tab-row" role="tablist" aria-label="主頁分頁">
+        <button id="btnMainTabTeacherEntry" type="button" class="btn page-tab is-active" data-page-tab="teacher-entry">老師登入封面</button>
+        <button id="btnMainTabTeacherSystem" type="button" class="btn page-tab" data-page-tab="teacher-system">老師系統頁</button>
+        <button id="btnMainTabSystemZone" type="button" class="btn page-tab" data-page-tab="system-zone">獨立系統區</button>
+        <button id="btnMainTabStudentPage" type="button" class="btn page-tab" data-page-tab="student-page">學生端頁面</button>
+        
+      </div>
+      <div id="mainPageTabHint" class="muted page-tab-hint">選擇老師或學生入口後，以卡片主控台開啟對應功能。</div>
+    </section>
+
+    <section class="dashboard-container teacher-entry-dashboard" data-page-pane="teacher-entry">
+  <section class="dashboard-section">
+    <h2 class="section-title">老師入口</h2>
+    <div class="card-grid">
+      <button class="feature-card" type="button" data-open-modal="teacher-access-modal">
+        <div class="card-icon">🧑‍🏫</div>
+        <div class="card-content"><h3>登入與查找學生</h3><p>登入老師系統，依卡序、NTAG 或 token 開啟學生。</p></div>
+      </button>
+      <button class="feature-card" type="button" data-page-tab-jump="teacher-system">
+        <div class="card-icon">🎛️</div>
+        <div class="card-content"><h3>進入老師主控台</h3><p>查看卡片式主控台，集中管理學生、商品與卡務。</p></div>
+      </button>
+      <button class="feature-card" type="button" data-page-tab-jump="student-page">
+        <div class="card-icon">🐉</div>
+        <div class="card-content"><h3>學生端入口</h3><p>掃描已寫入網址的 NTAG，直接進學生狀態頁。</p></div>
+      </button>
+    </div>
+  </section>
+</section>
+
+<section class="dashboard-container teacher-system-dashboard" data-page-pane="teacher-system">
+  <section class="dashboard-section">
+    <h2 class="section-title">學生與卡片管理</h2>
+    <div class="card-grid">
+      <button class="feature-card" type="button" data-open-modal="teacher-student-modal"><div class="card-icon">🧑‍🎓</div><div class="card-content"><h3>教師版學生狀態頁</h3><p>查看學生主體資訊，並在同一視窗完成老師操作。</p></div></button>
+      <button class="feature-card" type="button" data-open-modal="card-admin-modal"><div class="card-icon">💳</div><div class="card-content"><h3>卡片管理</h3><p>註冊新卡、補卡重綁、停用舊卡與寫入學生網址。</p></div></button>
+      <button class="feature-card" type="button" data-open-modal="student-page-modal"><div class="card-icon">📱</div><div class="card-content"><h3>學生端預覽</h3><p>預覽學生頁主畫面、收藏、排行與 AI 夥伴。</p></div></button>
+    </div>
+  </section>
+  <section class="dashboard-section">
+    <h2 class="section-title">批次與活動</h2>
+    <div class="card-grid">
+      <button class="feature-card" type="button" data-open-modal="batch-scan-modal"><div class="card-icon">⚡</div><div class="card-content"><h3>批量模式</h3><p>學生卡搭配道具卡的 10 秒批次掃描流程。</p></div></button>
+      <button class="feature-card" type="button" data-open-modal="item-forge-modal"><div class="card-icon">📡</div><div class="card-content"><h3>道具卡鑄造</h3><p>建立加分卡、狀態卡並串接批量掃描。</p></div></button>
+      <button class="feature-card" type="button" data-open-modal="logs-modal"><div class="card-icon">📜</div><div class="card-content"><h3>事件紀錄</h3><p>查看老師操作、狀態與學習問題的統一事件流。</p></div></button>
+    </div>
+  </section>
+  <section class="dashboard-section">
+    <h2 class="section-title">商城與系統</h2>
+    <div class="card-grid">
+      <button class="feature-card" type="button" data-open-modal="shop-modal"><div class="card-icon">🛍️</div><div class="card-content"><h3>商品與憑證</h3><p>贈送商品、建立憑證並處理兌現。</p></div></button>
+      <button class="feature-card" type="button" data-open-modal="system-zone-modal"><div class="card-icon">🧰</div><div class="card-content"><h3>系統管理</h3><p>題庫、Boss、批次工具與系統設定集中管理。</p></div></button>
+      <button class="feature-card" type="button" data-open-modal="teacher-access-modal"><div class="card-icon">🔎</div><div class="card-content"><h3>重新查找學生</h3><p>回到老師入口，切換不同學生或重新掃描卡片。</p></div></button>
+    </div>
+  </section>
+</section>
+
+<section class="dashboard-container student-page-dashboard" data-page-pane="student-page">
+  <section class="dashboard-section">
+    <h2 class="section-title">學生端主畫面</h2>
+    <div class="card-grid">
+      <button class="feature-card" type="button" data-open-modal="student-page-modal"><div class="card-icon">🐉</div><div class="card-content"><h3>養成總覽</h3><p>查看異獸、雷達圖、成長階段與五維指標。</p></div></button>
+      <button class="feature-card" type="button" data-click-target="btnStudentFocusDaily"><div class="card-icon">⚔️</div><div class="card-content"><h3>每日 / Boss</h3><p>打開每日歷練與 Boss 區，查看今日挑戰進度。</p></div></button>
+      <button class="feature-card" type="button" data-click-target="btnOpenStudentCollectionSpotlight"><div class="card-icon">🖼️</div><div class="card-content"><h3>收藏 / 隊伍</h3><p>查看成熟隊伍、收藏展示與排行內容。</p></div></button>
+      <button class="feature-card" type="button" data-click-target="btnOpenStudentGuideDetail"><div class="card-icon">💬</div><div class="card-content"><h3>AI 夥伴</h3><p>與 AI 夥伴互動，查看世界觀與陪伴摘要。</p></div></button>
+    </div>
+  </section>
+</section>
+
+<div id="teacher-access-modal" class="modal-overlay hidden"><div class="modal-container modal-lg"><div class="modal-header"><h2>🧑‍🏫 老師登入與查找學生</h2><button class="close-btn" type="button" onclick="closeModal('teacher-access-modal')">✖</button></div><div class="modal-body" id="teacher-access-modal-body"><div class="empty-state"><span class="icon">🪪</span><p>登入老師帳號後，以卡序、NTAG 或 token 查找學生。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('teacher-access-modal')">關閉</button></div></div></div>
+<div id="teacher-student-modal" class="modal-overlay hidden"><div class="modal-container modal-xl"><div class="modal-header"><h2>🧑‍🎓 教師版學生狀態頁</h2><button class="close-btn" type="button" onclick="closeModal('teacher-student-modal')">✖</button></div><div class="modal-body" id="teacher-student-modal-body"><div class="empty-state"><span class="icon">🐉</span><p>請先感應學生卡以開啟此功能。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('teacher-student-modal')">返回主控台</button></div></div></div>
+<div id="batch-scan-modal" class="modal-overlay hidden"><div class="modal-container modal-xl"><div class="modal-header"><h2>⚡ 批量模式</h2><button class="close-btn" type="button" onclick="closeModal('batch-scan-modal')">✖</button></div><div class="modal-body" id="batch-scan-modal-body"><div class="empty-state"><span class="icon">📡</span><p>等待學生卡感應中...</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('batch-scan-modal')">離開模式</button></div></div></div>
+<div id="shop-modal" class="modal-overlay hidden"><div class="modal-container modal-lg"><div class="modal-header"><h2>🛍️ 商品與憑證</h2><button class="close-btn" type="button" onclick="closeModal('shop-modal')">✖</button></div><div class="modal-body" id="shop-modal-body"><div class="empty-state"><span class="icon">🎁</span><p>選擇商品後，可免費贈送給目前學生。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('shop-modal')">關閉</button></div></div></div>
+<div id="card-admin-modal" class="modal-overlay hidden"><div class="modal-container modal-xl"><div class="modal-header"><h2>💳 卡片管理</h2><button class="close-btn" type="button" onclick="closeModal('card-admin-modal')">✖</button></div><div class="modal-body" id="card-admin-modal-body"><div class="empty-state"><span class="icon">💳</span><p>註冊新卡、補卡重綁與寫入學生網址。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('card-admin-modal')">關閉</button></div></div></div>
+<div id="item-forge-modal" class="modal-overlay hidden"><div class="modal-container modal-lg"><div class="modal-header"><h2>📡 道具卡鑄造</h2><button class="close-btn" type="button" onclick="closeModal('item-forge-modal')">✖</button></div><div class="modal-body" id="item-forge-modal-body"><div class="empty-state"><span class="icon">🧪</span><p>建立可寫入 NTAG 的道具卡效果。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('item-forge-modal')">關閉</button></div></div></div>
+<div id="logs-modal" class="modal-overlay hidden"><div class="modal-container modal-lg"><div class="modal-header"><h2>📜 事件紀錄</h2><button class="close-btn" type="button" onclick="closeModal('logs-modal')">✖</button></div><div class="modal-body" id="logs-modal-body"><div class="empty-state"><span class="icon">📝</span><p>最近操作與學習問題會整理在此。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('logs-modal')">關閉</button></div></div></div>
+<div id="system-zone-modal" class="modal-overlay hidden"><div class="modal-container modal-xl"><div class="modal-header"><h2>🧰 系統管理</h2><button class="close-btn" type="button" onclick="closeModal('system-zone-modal')">✖</button></div><div class="modal-body" id="system-zone-modal-body"><div class="empty-state"><span class="icon">🧭</span><p>題庫、Boss 與批次工具會在此集中管理。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('system-zone-modal')">關閉</button></div></div></div>
+<div id="student-page-modal" class="modal-overlay hidden"><div class="modal-container modal-xl"><div class="modal-header"><h2>🐉 學生端頁面</h2><button class="close-btn" type="button" onclick="closeModal('student-page-modal')">✖</button></div><div class="modal-body" id="student-page-modal-body"><div class="empty-state"><span class="icon">🐾</span><p>掃描學生 NTAG 後，可在此查看養成、收藏、排行與 AI 夥伴。</p></div></div><div class="modal-footer"><button class="btn-cancel" type="button" onclick="closeModal('student-page-modal')">關閉</button></div></div></div>
+
+
+    <section class="app-dashboard-shell legacy-hidden-zone" data-page-pane="teacher-entry">
+      <div class="dashboard-grid">
+        <button type="button" class="dashboard-card dashboard-card-primary" data-page-tab-jump="teacher-entry">
+          <span class="dashboard-emoji">🧑‍🏫</span><span class="dashboard-title">老師登入</span><span class="dashboard-copy">從專屬封面登入，進入老師系統主控台。</span>
+        </button>
+        <button type="button" class="dashboard-card" data-nav-target="teacherAccessSection">
+          <span class="dashboard-emoji">🔎</span><span class="dashboard-title">查找學生</span><span class="dashboard-copy">依卡序、NTAG 或 token 開啟教師版學生狀態頁。</span>
+        </button>
+        <button type="button" class="dashboard-card quick-open" data-click-target="btnOpenBatchModal">
+          <span class="dashboard-emoji">⚡</span><span class="dashboard-title">批量掃描</span><span class="dashboard-copy">學生卡 → 道具卡，10 秒循環批次處理。</span>
+        </button>
+        <button type="button" class="dashboard-card" data-page-tab-jump="student-page">
+          <span class="dashboard-emoji">🐉</span><span class="dashboard-title">學生端入口</span><span class="dashboard-copy">模擬掃描已寫入網址的 NTAG，直接進學生頁。</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="tech-panel compact-panel" data-page-pane="teacher-entry">
+      <div class="menu-section-title tech-font">系統總覽</div>
+      <div class="summary-strip">
+        <div><strong>狀態：</strong><span data-bind="opBusy">待命</span></div>
+        <div><strong>目前動作：</strong><span data-bind="opAction">系統待命</span></div>
+        <div><strong>最後同步：</strong><span data-bind="opLastSync">-</span></div>
+        <div><strong>老師 session：</strong><span id="teacherSessionText">未登入</span></div>
+        <div><strong>批量摘要：</strong><span data-bind="batchSummary">總數 0 / 成功 0 / 失敗 0 / 跳過 0</span></div>
+      </div>
+    </section>
+
+    <section class="tech-panel" data-page-pane="teacher-entry">
+      <div class="menu-sections">
+        <div class="menu-section">
+          <div class="menu-section-title tech-font">老師主流程</div>
+          <div class="menu-grid">
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="teacherAccessSection"><span class="btn-main">🔎 查找學生</span><span class="btn-sub">卡序 / NTAG / Token</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="teacherStudentOpsSection"><span class="btn-main">🧑‍🏫 老師操作頁</span><span class="btn-sub">加分 / 狀態 / 事件</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="shopVoucherSection"><span class="btn-main">🛍️ 商城與憑證</span><span class="btn-sub">購買 / 兌現 / 實體獎勵</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="cardAdminSection"><span class="btn-main">💳 卡片管理</span><span class="btn-sub">補卡 / 停用 / 綁定 NTAG</span></button>
+          </div>
+        </div>
+        <div class="menu-section">
+          <div class="menu-section-title tech-font">批量與系統區</div>
+          <div class="menu-grid">
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="batchWorkflowSection"><span class="btn-main">⚡ 批量模式</span><span class="btn-sub">學生卡 → 道具卡 10 秒循環</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="forgeSection"><span class="btn-main">📡 道具卡鑄造</span><span class="btn-sub">加分卡 / 狀態卡</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="teacherLogsSection"><span class="btn-main">📜 事件紀錄</span><span class="btn-sub">操作回饋 / 學習問題</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="studentCoreSection"><span class="btn-main">🐉 學生正式頁骨架</span><span class="btn-sub">每日訓練 / Boss / AI</span></button>
+          </div>
+        </div>
+        <div class="menu-section menu-footer">
+          <div class="menu-section-title tech-font">獨立系統區</div>
+          <div class="menu-grid menu-grid-bottom">
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="systemZoneSection"><span class="btn-main">📝 題庫 / 命題</span><span class="btn-sub">Boss / 題庫 / 批次工具</span></button>
+            <button type="button" class="btn menu-btn menu-nav" data-nav-target="systemZoneSection"><span class="btn-main">🧰 系統管理</span><span class="btn-sub">學習輔助 / 同步 / 登出</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="tech-panel compact-panel teacher-system-shell legacy-hidden-zone" data-page-pane="teacher-system">
+      <div class="section-chrome"><h2 class="tech-font">🧭 老師系統頁</h2><span class="section-chip">主控台</span></div>
+      <div class="teacher-system-shell-copy">登入後先進入老師系統頁，從卡片式入口切換到學生狀態、商品、卡務或批量操作。</div>
+      <div class="teacher-system-switcher" id="teacherSystemSwitcher">
+        <button type="button" class="btn teacher-system-switch is-active" data-teacher-system-target="teacherStudentOpsSection">教師版學生狀態頁</button>
+        <button type="button" class="btn teacher-system-switch" data-teacher-system-target="shopVoucherSection">商品 / 憑證</button>
+        <button type="button" class="btn teacher-system-switch" data-teacher-system-target="cardAdminSection">卡務 / NTAG</button>
+        <button type="button" class="btn teacher-system-switch" data-teacher-system-target="batchWorkflowSection">批量掃描</button>
+        <button type="button" class="btn teacher-system-switch" data-teacher-system-target="teacherLogsSection">事件紀錄</button>
+      </div>
+      <div class="dashboard-grid mini-dashboard teacher-modal-dashboard">
+        <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenTeacherActionModal"><span class="dashboard-emoji">✨</span><span class="dashboard-title">快速加分</span><span class="dashboard-copy">在彈出視窗中完成老師高頻操作。</span></button>
+        <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenStatusModal"><span class="dashboard-emoji">🩹</span><span class="dashboard-title">狀態調整</span><span class="dashboard-copy">負面狀態、學習問題與紀錄。</span></button>
+        <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenCardAdminModal"><span class="dashboard-emoji">💳</span><span class="dashboard-title">卡務視窗</span><span class="dashboard-copy">補卡、重綁、停用與寫入 NTAG。</span></button>
+        <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenStudentModal"><span class="dashboard-emoji">📱</span><span class="dashboard-title">學生頁預覽</span><span class="dashboard-copy">以 App 視覺快速預覽學生端內容。</span></button>
+      </div>
+      <div id="teacherSystemSwitcherHint" class="muted teacher-system-switcher-hint">目前工作區：教師版學生狀態頁。對齊舊版邏輯：先看學生主體，再做老師操作。</div>
+    </section>
+
+    <div class="legacy-layout">
+      <aside class="tech-panel legacy-cockpit legacy-hidden-zone" id="legacyCockpitSection" data-page-pane="teacher-system">
+        <div class="menu-section-title tech-font">舊版主控台導覽</div>
+        <div class="legacy-cockpit-kicker">老師端主控台</div>
+        <div class="legacy-cockpit-meta">
+          <div><strong>版本：</strong><span id="buildTagText">-</span></div>
+          <div><strong>目前階段：</strong><span id="buildPhaseText">老師主控台 / 系統區排版對齊</span></div>
+          <div><strong>當前學生：</strong><span data-bind="name">未載入</span></div>
+        </div>
+        <div class="legacy-cockpit-group">
+          <div class="menu-section-title tech-font">快速操作</div>
+          <div class="legacy-cockpit-buttons">
+            <button type="button" class="btn btn-solid quick-open" data-click-target="btnOpenTeacherActionModal">老師操作總覽</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenScoreModal">舊版式加分視窗</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenStatusModal">狀態 / 學習問題</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenLogsModal">事件紀錄</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenSystemSummaryModal">系統區總覽</button>
+            <button type="button" class="btn quick-open" data-click-target="btnOpenStudentModal">學生頁預覽</button>
+          </div>
+        </div>
+        <div class="legacy-cockpit-group">
+          <div class="menu-section-title tech-font">主控區跳轉</div>
+          <div class="legacy-anchor-list">
+            <button type="button" class="btn menu-nav" data-nav-target="teacherAccessSection">查找學生與登入</button>
+            <button type="button" class="btn menu-nav" data-nav-target="teacherStudentOpsSection">老師操作頁</button>
+            <button type="button" class="btn menu-nav" data-nav-target="batchWorkflowSection">批量模式</button>
+            <button type="button" class="btn menu-nav" data-nav-target="shopVoucherSection">商城 / 憑證</button>
+            <button type="button" class="btn menu-nav" data-nav-target="systemZoneSection">獨立系統區</button>
+            <button type="button" class="btn menu-nav" data-nav-target="studentCoreSection">學生正式頁骨架</button>
+          </div>
+        </div>
+        <div class="legacy-cockpit-group">
+          <div class="menu-section-title tech-font">舊版對齊提示</div>
+          <div class="legacy-callout">這裡保留老師常用的快捷入口，方便在同一頁面中完成查找、加分、卡務與學生端預覽。</div>
+        </div>
+      </aside>
+
+      <main class="workspace-grid">
+      <section class="tech-panel legacy-hidden-zone" id="teacherAccessSection" data-page-pane="teacher-entry">
+        <div class="section-chrome"><h2 class="tech-font">🔎 查找學生</h2><span class="section-chip">P0 入口</span></div>
+        <div class="entry-flow-inline">老師專用入口：先登入，再依卡序、NTAG 或 token 進入教師版學生狀態頁。</div>
+        <div class="field-grid two-col">
+          <div class="field-row"><label for="teacherEmail">老師帳號</label><input id="teacherEmail" type="email" placeholder="teacher@example.com" /></div>
+          <div class="field-row"><label for="teacherPassword">老師密碼</label><input id="teacherPassword" type="password" placeholder="請輸入密碼" /></div>
+          <div class="field-row"><label for="serialInput">學生卡序（正式以 serial 為主）</label><input id="serialInput" type="text" placeholder="例如 001" /></div>
+          <div class="field-row"><label for="ntagInput">學生 ntag / token</label><input id="ntagInput" type="text" placeholder="可用 ntag 或 token 查找學生" /></div>
+          <div class="field-row span-2"><label for="tokenInput">學生 token（可選）</label><input id="tokenInput" type="text" placeholder="若要直接驗 student_pages，可輸入 token" /></div>
+        </div>
+        <div class="button-row wrap">
+          <button id="btnLoadStudent" type="button" class="btn btn-solid">依卡序載入</button>
+          <button id="btnLoadByNtag" type="button" class="btn">依 ntag 載入</button>
+          <button id="btnLoadByToken" type="button" class="btn">用 token 載入</button>
+        </div>
+        <div class="glass-panel">
+          <h3 class="tech-font">老師可操作範圍</h3>
+          <pre id="teacherAccessScopeText">尚未載入老師權限範圍</pre>
+        </div>
+        <div class="result-panel glass-panel">
+          <h3 class="tech-font">目前學生摘要</h3>
+          <div class="status-grid">
+            <div class="status-card status-ok"><div class="status-label">卡序</div><div class="status-value" data-bind="serial">未載入</div><div class="status-hint">正式欄位 serial</div></div>
+            <div class="status-card status-ok"><div class="status-label">暱稱</div><div class="status-value" data-bind="name">未載入</div><div class="status-hint">正式顯示名稱</div></div>
+            <div class="status-card status-neutral"><div class="status-label">金幣</div><div class="status-value" data-bind="coins">0</div><div class="status-hint">資料庫同步</div></div>
+            <div class="status-card status-neutral"><div class="status-label">總 XP</div><div class="status-value" data-bind="xp">0</div><div class="status-hint">成長核心</div></div>
+            <div class="status-card status-neutral"><div class="status-label">AI 夥伴</div><div class="status-value" data-bind="guideMode">智者貓咪</div><div class="status-hint">guide_mode 真實來源</div></div>
+            <div class="status-card status-neutral"><div class="status-label">來源</div><div class="status-value" data-bind="source">-</div><div class="status-hint">students / student_pages</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="teacherStudentOpsSection" data-page-pane="teacher-system">
+        <div class="section-chrome"><h2 class="tech-font">🧑‍🏫 老師學生操作頁</h2><span class="section-chip">同頁操作</span></div>
+        <div class="result-summary">以學生狀態頁為主體，老師在同一頁完成加分、狀態、贈送、卡務與事件紀錄。</div>
+        <div class="legacy-layout teacher-ops-layout">
+          <aside class="glass-panel legacy-cockpit teacher-ops-cockpit">
+            <div class="tech-font">老師操作艙</div>
+            <div class="legacy-cockpit-kicker">把舊版的工作順序固定在同一頁：查學生 → 選操作面板 → 寫入資料 → 回讀驗證 → 同步更新畫面。</div>
+            <div class="legacy-cockpit-meta">
+              <div><strong>目前學生</strong><div id="legacyStudentMetaText">未載入學生</div></div>
+              <div><strong>加分面板</strong><div id="legacyCurrentPanelText">一般學習加分面板</div></div>
+              <div><strong>active token</strong><div id="legacyCurrentTokenText">未綁定</div></div>
+              <div><strong>學生頁網址</strong><div id="legacyStudentUrlPreview">請先載入學生</div></div>
+              <div><strong>版本</strong><div id="legacyBuildTagText">step24</div></div>
+            </div>
+            <div class="legacy-cockpit-group">
+              <div class="tech-font">舊版快捷視窗</div>
+              <div class="legacy-cockpit-buttons">
+                <button type="button" class="btn btn-solid quick-open" data-click-target="btnOpenTeacherActionModal">老師操作總覽</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenScoreModal">加分視窗</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenStatusModal">狀態視窗</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenLogsModal">事件紀錄視窗</button>
+              </div>
+            </div>
+            <div class="legacy-cockpit-group">
+              <div class="tech-font">老師主流程捷徑</div>
+              <div class="legacy-anchor-list">
+                <button type="button" class="btn" data-nav-target="teacherStudentOpsSection">老師操作頁</button>
+                <button type="button" class="btn" data-nav-target="shopVoucherSection">商城 / 憑證</button>
+                <button type="button" class="btn" data-nav-target="cardAdminSection">卡片管理 / 補卡</button>
+                <button type="button" class="btn" data-nav-target="batchWorkflowSection">批量掃描</button>
+                <button type="button" class="btn" data-nav-target="teacherLogsSection">事件紀錄</button>
+                <button type="button" class="btn" data-nav-target="systemZoneSection">獨立系統區</button>
+              </div>
+            </div>
+          </aside>
+          <div class="teacher-ops-workspace">
+            <div class="button-row wrap legacy-quick-row">
+              <button type="button" class="btn btn-solid" id="btnOpenTeacherActionModal">開啟老師操作總覽</button>
+              <button type="button" class="btn" id="btnOpenScoreModal">舊版式加分視窗</button>
+              <button type="button" class="btn" id="btnOpenStatusModal">狀態 / 學習問題視窗</button>
+              <button type="button" class="btn" id="btnOpenLogsModal">事件紀錄視窗</button>
+            </div>
+            <div class="glass-panel teacher-workflow-dock">
+              <div class="section-chrome"><h3 class="tech-font">老師同頁工作列</h3><span class="section-chip">無痛接軌</span></div>
+              <div class="teacher-workflow-copy">查到學生後直接留在同一頁操作，不用重新理解新版分區。先選工作頁籤，再依舊版習慣快速完成加分、狀態、商品、卡務與紀錄查看。</div>
+              <div class="teacher-op-tabs" id="teacherOpTabs">
+                <button type="button" class="btn teacher-op-tab is-active" data-op-pane="score">加分 / 改名 / AI</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="status">狀態 / 學習問題</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="shop">商品 / 憑證</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="card">卡務 / NTAG</button>
+                <button type="button" class="btn teacher-op-tab" data-op-pane="logs">事件紀錄</button>
+              </div>
+              <div class="teacher-op-inline-status" id="teacherOpInlineStatus">目前頁籤：加分 / 改名 / AI</div>
+              <div class="teacher-op-quickstrip" id="teacherOpQuickstrip">
+                <button type="button" class="btn teacher-op-shortcut is-active" data-op-shortcut="score">加分 / 改名 / AI</button>
+                <button type="button" class="btn teacher-op-shortcut" data-op-shortcut="status">狀態 / 學習問題</button>
+                <button type="button" class="btn teacher-op-shortcut" data-op-shortcut="shop">商品 / 憑證</button>
+                <button type="button" class="btn teacher-op-shortcut" data-op-shortcut="card">卡務 / NTAG</button>
+                <button type="button" class="btn teacher-op-shortcut" data-op-shortcut="logs">事件紀錄</button>
+              </div>
+            </div>
+            <div class="glass-panel teacher-student-shell">
+              <div class="section-chrome"><h3 class="tech-font">教師版學生狀態頁</h3><span class="section-chip">學生主體 + 老師工具列</span></div>
+              <div id="teacherStudentShellHint" class="teacher-student-shell-hint">查到學生後，這裡會以舊版習慣顯示學生主體資訊；每日挑戰與 Boss 留在學生端，老師端則加上加分、商城、卡務與寫卡工具。</div>
+              <div class="teacher-student-shell-grid">
+                <div class="teacher-student-hero-card">
+                  <div class="teacher-student-hero-headline">
+                    <span id="teacherStudentHeroGrade" class="teacher-student-hero-grade">年級 / 班級 待同步</span>
+                    <span id="teacherStudentHeroSerial" class="teacher-student-hero-serial">卡序 #---</span>
+                  </div>
+                  <div class="teacher-student-hero-main">
+                    <button type="button" class="teacher-student-hero-visual" data-click-target="btnOpenStudentCollectionSpotlightMain">
+                      <div id="teacherStudentVisualGlyph" class="teacher-student-hero-glyph">📦</div>
+                    </button>
+                    <div class="teacher-student-hero-copy">
+                      <div id="teacherStudentVisualTitle" class="teacher-student-hero-title">請先感應學生卡</div>
+                      <div class="teacher-student-hero-badges">
+                        <span id="teacherStudentHeroStatus" class="teacher-student-hero-badge is-status">狀態待同步</span>
+                        <span id="teacherStudentHeroTitleBadge" class="teacher-student-hero-badge is-title">稱號待同步</span>
+                        <span id="teacherStudentHeroCoins" class="teacher-student-hero-badge is-coins">金幣 0</span>
+                      </div>
+                      <div id="teacherStudentVisualText" class="teacher-student-hero-text">載入後將顯示異獸主視覺、五維雷達、進化能量與收藏摘要。</div>
+                      <div id="teacherStudentBridgeHint" class="teacher-student-bridge-hint">尚未建立學生頁網址 / NTAG 入口。</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="teacher-student-radar-card">
+                  <div class="teacher-student-radar-head">
+                    <strong>五行五維摘要</strong>
+                    <span id="teacherStudentTopAttr" class="teacher-student-radar-top">最高屬性：-</span>
+                  </div>
+                  <div id="teacherStudentRadarRows" class="teacher-student-radar-rows"><div class="student-empty-card">請先感應學生卡</div></div>
+                </div>
+              </div>
+              <div id="teacherStudentIndicatorSummary" class="teacher-student-indicator-strip"><div class="student-empty-card">請先感應學生卡</div></div>
+              <div class="teacher-student-shell-footer">
+                <div class="teacher-student-shell-column">
+                  <h4 class="tech-font">學生主體摘要</h4>
+                  <div class="status-grid teacher-student-status-grid">
+                    <div class="status-card status-ok"><div class="status-label">暱稱</div><div class="status-value" data-bind="nickname">未載入</div><div class="status-hint">正式顯示名稱</div></div>
+                    <div class="status-card status-neutral"><div class="status-label">年級 / 班級</div><div class="status-value" data-bind="grade">-</div><div class="status-hint">共用核心資訊</div></div>
+                    <div class="status-card status-neutral"><div class="status-label">稱號</div><div class="status-value" data-bind="title">-</div><div class="status-hint">教師與學生共用摘要</div></div>
+                    <div class="status-card status-neutral"><div class="status-label">狀態</div><div class="status-value" data-bind="status">健康</div><div class="status-hint">負面狀態同步</div></div>
+                  </div>
+                  <pre id="teacherStudentAttrsText" data-bind="attrs">-</pre>
+                </div>
+                <div class="teacher-student-shell-column">
+                  <h4 class="tech-font">收藏 / 排行 / 老師快捷</h4>
+                  <pre id="teacherStudentCollectionSummary" class="teacher-student-collection-summary">收藏與排行榜摘要會在載入學生後顯示。</pre>
+                  <div class="button-row wrap teacher-student-shortcuts">
+                    <button type="button" class="btn quick-open" data-click-target="btnOpenStudentCollectionSpotlightMain">放大目前異獸</button>
+                    <button type="button" class="btn quick-open" data-click-target="btnOpenStudentRankingLineup">排行榜隊伍</button>
+                    <button type="button" class="btn quick-open" data-click-target="btnOpenStudentFrontPreview">學生端預覽</button>
+                    <button type="button" class="btn quick-open" data-click-target="btnWriteStudentNfc">寫入學生頁 NFC</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="glass-panel teacher-flow-panel">
+              <div class="section-chrome"><h3 class="tech-font">舊版流程工作列</h3><span class="section-chip" id="legacyPanelBadge">一般面板</span></div>
+              <div class="legacy-callout">先選擇符合學生班別的事件面板，再用同頁按鈕直接入帳。這一區保持舊版「看得到整條流程」的手感，但真正寫入仍走新版 services / domain。</div>
+              <div class="legacy-flow-strip" id="legacyFlowStrip">
+                <div class="legacy-flow-step"><span class="legacy-flow-index">1</span><div><strong>查找學生</strong><small id="legacyFlowStudent">請先感應學生卡</small></div></div>
+                <div class="legacy-flow-step"><span class="legacy-flow-index">2</span><div><strong>選擇事件面板</strong><small id="legacyFlowPanel">一般學習加分面板</small></div></div>
+                <div class="legacy-flow-step"><span class="legacy-flow-index">3</span><div><strong>同頁操作</strong><small id="legacyFlowAction">可直接加分 / 狀態 / 商品 / NTAG</small></div></div>
+                <div class="legacy-flow-step"><span class="legacy-flow-index">4</span><div><strong>結果回饋</strong><small id="legacyFlowResult">尚未執行寫入驗證</small></div></div>
+              </div>
+              <div class="button-row wrap teacher-panel-switch-row">
+                <button type="button" class="btn legacy-panel-switch" data-action-panel="general">一般學習</button>
+                <button type="button" class="btn legacy-panel-switch" data-action-panel="support">學習扶助</button>
+                <button type="button" class="btn legacy-panel-switch" data-action-panel="science">科展團隊</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenScoreModal">用舊版視窗檢視面板</button>
+              </div>
+              <div id="actionGridModeHint" class="action-help-note">目前使用一般學習加分面板。</div>
+              <div id="legacyActionHintText" class="action-help-note">面板提示會顯示在這裡。</div>
+              <div id="legacyActionBoard"></div>
+              <div class="button-row wrap legacy-inline-shortcuts">
+                <button type="button" class="btn btn-solid" id="openDebuffBtn">狀態調整</button>
+                <button type="button" class="btn quick-open" data-click-target="btnOpenLogsModal">查看事件紀錄</button>
+                <button type="button" class="btn" data-nav-target="shopVoucherSection">商品 / 憑證</button>
+                <button type="button" class="btn" data-nav-target="cardAdminSection">NTAG / 補卡</button>
+              </div>
+            </div>
+    
+        <div class="student-front-switcher-shell">
+          <div class="student-front-switcher" id="studentFrontSwitcher">
+            <button type="button" class="btn student-front-switch is-active" data-student-front-target="studentCoreSection">養成總覽</button>
+            <button type="button" class="btn student-front-switch" data-student-front-target="studentDailyBossPanel">每日 / Boss</button>
+            <button type="button" class="btn student-front-switch" data-student-front-target="studentRadarCollectionPanel">收藏 / 雷達</button>
+            <button type="button" class="btn student-front-switch" data-student-front-target="studentActivityPanel">排行 / 活動</button>
+            <button type="button" class="btn student-front-switch" data-student-front-target="studentFutureSystemsPanel">交換 / 寄宿</button>
+            <button type="button" class="btn student-front-switch" data-student-front-target="guideResultPanel">AI 對話</button>
+          </div>
+          <div id="studentFrontSwitcherHint" class="muted student-front-switcher-hint">學生端第一屏順序：先看養成總覽，再往每日 / Boss、收藏 / 排行與 AI 互動延伸。</div>
+        </div>
+        <div class="subsection-grid">
+              <div class="glass-panel teacher-op-pane is-active" data-op-pane="score">
+                <h3 class="tech-font">✏️ 手動加分 / 改名 / AI</h3>
+                <div class="field-row"><label for="renameInput">暱稱 / 顯示名稱</label><input id="renameInput" type="text" placeholder="輸入新名字" /></div>
+                <div class="button-row"><button id="btnRename" type="button" class="btn">儲存新名字</button></div>
+                <div class="field-row"><label for="guideModeSelect">AI 夥伴</label><select id="guideModeSelect"><option value="cat">智者貓咪</option><option value="baize">白澤</option><option value="neutral">中性助教</option></select></div>
+                <div class="button-row"><button id="btnSaveGuideMode" type="button" class="btn">儲存 AI 夥伴</button></div>
+                <div class="field-row"><label for="scorePresetSelect">舊版加分預設</label><select id="scorePresetSelect"><option value="">手動輸入</option></select></div>
+                <div class="field-row"><label for="scoreReasonInput">加分事件</label><input id="scoreReasonInput" type="text" placeholder="例如：課堂表現優良" /></div>
+                <div class="field-grid two-col compact-grid">
+                  <div class="field-row"><label for="scoreValueInput">XP</label><input id="scoreValueInput" type="number" value="1" min="1" /></div>
+                  <div class="field-row"><label for="scoreAttrSelect">屬性</label><select id="scoreAttrSelect"><option value="metal">金</option><option value="wood">木</option><option value="water">水</option><option value="fire">火</option><option value="earth">土</option></select></div>
+                </div>
+                <div class="button-row wrap">
+                  <button id="btnPreviewScore" type="button" class="btn btn-solid">預覽加分</button>
+                  <button id="btnApplyScoreDirect" type="button" class="btn">直接入帳</button>
+                </div>
+              </div>
+
+              <div class="glass-panel teacher-op-pane" data-op-pane="status">
+                <h3 class="tech-font">☠️ 狀態調整 / 學習問題</h3>
+                <div class="field-row"><label for="statusPresetSelect">負面狀態</label><select id="statusPresetSelect"><option value="Poison">中毒</option><option value="Frozen">冰凍</option><option value="Paralyzed">麻痺</option><option value="Confusion">混亂</option></select></div>
+                <div class="field-row"><label for="statusStacksInput">層數</label><input id="statusStacksInput" type="number" value="1" min="1" max="5" /></div>
+                <div class="field-row"><label for="statusReasonInput">學習問題 / 狀態原因</label><input id="statusReasonInput" type="text" placeholder="例如：作業缺交、上課分心" /></div>
+                <div class="button-row"><button id="btnApplyStatus" type="button" class="btn">寫入負面狀態</button></div>
+                <div id="previewPanel" class="preview-panel hidden">
+                  <h3>確認加分</h3>
+                  <p id="previewText">尚未準備</p>
+                  <div class="button-row wrap">
+                    <button id="btnConfirmScore" type="button" class="btn btn-solid">確認入帳</button>
+                    <button id="btnCancelScore" type="button" class="btn">取消</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="subsection-grid teacher-followup-grid">
+              <div class="glass-panel teacher-op-pane" data-op-pane="shop">
+                <h3 class="tech-font">🛍️ 商品 / 憑證捷徑</h3>
+                <div class="result-summary">老師端商品操作為免費贈送；學生前台購買仍維持獨立。這裡只放舊版作業捷徑，避免老師在多個區塊之間迷路。</div>
+                <div class="button-row wrap">
+                  <button type="button" class="btn btn-solid" data-nav-target="shopVoucherSection">前往商品 / 憑證區</button>
+                  <button type="button" class="btn quick-open" data-click-target="btnBuyCatalogItem">免費贈送目前選取商品</button>
+                  <button type="button" class="btn quick-open" data-click-target="btnBuyPhysicalReward">贈送實體商品並建立憑證</button>
+                  <button type="button" class="btn quick-open" data-click-target="btnRedeemVoucher">兌現目前憑證</button>
+                </div>
+              </div>
+              <div class="glass-panel teacher-op-pane" data-op-pane="card">
+                <h3 class="tech-font">💳 卡務 / NTAG 捷徑</h3>
+                <div class="result-summary">補卡主流程維持舊版順序：先查學生，再感應新卡，最後停用舊卡 / 舊 token、改發新 token、寫入學生頁 NFC。</div>
+                <div class="button-row wrap">
+                  <button type="button" class="btn btn-solid" data-nav-target="cardAdminSection">前往卡片管理區</button>
+                  <button type="button" class="btn quick-open" data-click-target="btnPreviewCardWorkflow">預覽補卡流程</button>
+                  <button type="button" class="btn quick-open" data-click-target="btnRunCardWorkflow">一鍵補卡 / 重綁</button>
+                  <button type="button" class="btn quick-open" data-click-target="btnWriteStudentNfc">寫入學生頁 NFC</button>
+                </div>
+              </div>
+              <div class="glass-panel teacher-op-pane" data-op-pane="logs">
+                <h3 class="tech-font">📜 事件紀錄捷徑</h3>
+                <div class="result-summary">直接查看目前學生的統一事件流，不用先跳到其他工作區。後續若要稽核，再進入完整事件紀錄區。</div>
+                <div class="button-row wrap">
+                  <button type="button" class="btn btn-solid quick-open" data-click-target="btnOpenLogsModal">直接開事件紀錄視窗</button>
+                  <button type="button" class="btn" data-nav-target="teacherLogsSection">前往完整事件紀錄區</button>
+                </div>
+                <pre id="teacherOpsInlineLogPreview">請先感應學生卡</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="batchWorkflowSection" data-page-pane="teacher-system">
+        <h2 class="tech-font">⚡ 批量模式 / NTAG 工作流</h2>
+        <div class="result-summary">嚴格參照舊版：先感應學生卡，10 秒內再感應道具卡；再次感應道具卡會重新計時，若換學生卡則開新循環。</div>
+        <div class="subsection-grid">
+          <div class="glass-panel">
+            <div class="field-row"><label for="batchScanStudentInput">學生卡序</label><input id="batchScanStudentInput" type="text" placeholder="先輸入或掃描學生卡序，例如 001" /></div>
+            <div class="field-row"><label for="batchScanSignalInput">掃描原始碼 / NTAG / token / 道具卡 ID</label><input id="batchScanSignalInput" type="text" placeholder="例如：001、NTAG-4A7C-01、item_xxxxx、custom:item_xxxxx" /></div>
+            <div class="field-grid two-col compact-grid">
+              <div class="field-row"><label for="batchCardModeSelect">道具類型</label><select id="batchCardModeSelect"><option value="xp">加分道具</option><option value="debuff">負面狀態道具</option></select></div>
+              <div class="field-row"><label for="batchCardPresetSelect">道具卡預設</label><select id="batchCardPresetSelect"></select></div>
+            </div>
+            <div class="button-row wrap"><button id="btnBatchToggleMode" type="button" class="btn btn-solid">開啟掃描模式</button><button id="btnBatchScanStudent" type="button" class="btn">手動指定學生</button><button id="btnBatchProcessSignal" type="button" class="btn">處理掃描碼</button><button id="btnApplyBatchCard" type="button" class="btn">手動套用道具卡</button><button id="btnOpenBatchModal" type="button" class="btn">開啟批量專屬頁</button></div>
+            <pre id="batchScanStatusText">等待學生卡</pre>
+            <div class="summary-strip compact-inline"><div><strong>剩餘時限：</strong><span id="batchScanTimerText">0.0s</span></div><div><strong>連續次數：</strong><span id="batchScanComboText">0</span></div></div>
+            <div class="field-grid two-col compact-grid"><div class="result-panel"><h3>目前學生快照</h3><pre id="batchStudentSnapshotText">尚未開啟批量學生循環</pre></div><div class="result-panel"><h3>最近掃描履歷</h3><pre id="batchScanHistoryText">尚無批量掃描履歷</pre></div></div>
+            <pre id="batchScanResultText">尚未套用道具卡</pre>
+            <div class="button-row wrap"><button id="btnRefreshBatchResultBoard" type="button" class="btn">重整成功回饋板</button><button id="btnCopyBatchResultBoard" type="button" class="btn">複製成功回饋板</button></div>
+            <div id="batchResultBoard" class="legacy-grid"><div class="legacy-callout">尚未產生批量成功回饋板</div></div>
+            <div class="button-row wrap"><button id="btnResetBatchCycle" type="button" class="btn">清除目前循環</button><button id="btnRefreshBatchAudit" type="button" class="btn">重整批量盤查</button><button id="btnCopyBatchAudit" type="button" class="btn">複製批量盤查</button></div>
+            <pre id="batchAuditText">尚未產生批量盤查摘要</pre>
+            <div class="button-row wrap"><button id="btnRefreshBatchFieldCheck" type="button" class="btn">重整現場確認</button><button id="btnCopyBatchFieldCheck" type="button" class="btn">複製現場確認</button></div>
+            <pre id="batchFieldCheckText">尚未產生批量現場確認</pre>
+          </div>
+          <div class="glass-panel">
+            <h3 class="tech-font">批次卡序工具</h3>
+            <div class="field-row"><label for="batchSerialFromInput">卡序區間</label><div class="button-row wrap"><input id="batchSerialFromInput" type="text" placeholder="起始卡序，例如 001" /><input id="batchSerialToInput" type="text" placeholder="結束卡序，例如 030" /></div></div>
+            <div class="field-row"><label for="batchSerialInput">批量卡序清單</label><textarea id="batchSerialInput" rows="5" placeholder="每行一個卡序，例如&#10;001&#10;002&#10;003"></textarea></div>
+            <div class="field-row"><label for="batchReasonInput">批量事件</label><input id="batchReasonInput" type="text" placeholder="例如：完成任務" /></div>
+            <div class="field-row"><label for="batchValueInput">批量 XP</label><input id="batchValueInput" type="number" value="1" min="1" /></div>
+            <div class="button-row"><button id="btnRunBatch" type="button" class="btn">執行批量加分</button></div>
+            <div id="batchResultPanel" class="result-panel"><h3>批量結果</h3><pre id="batchResultText">尚未執行</pre></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="shopVoucherSection" data-page-pane="teacher-system">
+        <div class="section-chrome"><h2 class="tech-font">🛍️ 商城 / 憑證 / 實體商品</h2><span class="section-chip">老師贈送 / 兌現</span></div>
+        <div class="subsection-grid">
+          <div class="glass-panel">
+            <h3 class="tech-font">老師贈送商品</h3>
+            <div class="notice-banner notice-neutral">先載入 <code>shop_catalog</code> 後，直接免費贈送商品給目前學生。支援實體獎勵與隱藏蛋；贈送後會真的寫入學生資料，不扣學生金幣。</div>
+            <div class="field-row"><label for="teacherShopCatalogSelect">商品清單</label><select id="teacherShopCatalogSelect"><option value="">請先重載商品清單</option></select></div>
+            <div class="button-row wrap"><button id="btnRefreshTeacherShopCatalog" type="button" class="btn">重載可贈送商品清單</button><button id="btnBuyCatalogItem" type="button" class="btn btn-solid">免費贈送選取商品給目前學生</button></div>
+            <pre id="teacherShopCatalogText">尚未載入商品清單</pre>
+            <hr class="panel-divider" />
+            <h3 class="tech-font">手動贈送實體商品</h3>
+            <div class="field-row"><label for="shopItemNameInput">實體商品名稱</label><input id="shopItemNameInput" type="text" placeholder="例如：山海貼紙包" /></div>
+            <div class="field-grid two-col compact-grid"><div class="field-row"><label for="shopItemPriceInput">原定價</label><input id="shopItemPriceInput" type="number" value="5" min="1" /></div><div class="field-row"><label for="shopItemIdInput">商品 ID</label><input id="shopItemIdInput" type="text" placeholder="例如：physical_sticker_pack" /></div></div>
+            <div class="button-row"><button id="btnBuyPhysicalReward" type="button" class="btn">免費贈送實體商品並生成憑證</button></div>
+          </div>
+          <div class="glass-panel">
+            <h3 class="tech-font">老師兌現憑證</h3>
+            <div class="field-row"><label for="redeemVoucherIdInput">兌現憑證 ID</label><input id="redeemVoucherIdInput" type="text" placeholder="輸入 voucherId" /></div>
+            <div class="button-row"><button id="btnRedeemVoucher" type="button" class="btn">老師兌現憑證</button></div>
+            <div id="collectionPanel" class="result-panel"><h3>收藏 / 憑證</h3><pre id="collectionText">尚未載入</pre></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="cardAdminSection" data-page-pane="teacher-system">
+        <div class="section-chrome"><h2 class="tech-font">💳 卡片管理 / 補卡系統區</h2><span class="section-chip">卡務 P0</span></div>
+        <div class="result-summary">舊版規則：補卡 / 發卡 / 重綁時，舊 token 必須失效，新 token 必須重發；舊卡不可繼續使用。</div>
+        <div class="subsection-grid">
+          <div class="glass-panel">
+            <h3 class="tech-font">🆕 新卡註冊 / 發卡</h3>
+            <div class="field-grid two-col compact-grid">
+              <div class="field-row"><label for="newCardSerialInput">新卡卡序 / serial</label><input id="newCardSerialInput" type="text" placeholder="例如 001，正式主欄位以 serial 為準" /></div>
+              <div class="field-row"><label for="newCardGradeInput">年級</label><input id="newCardGradeInput" type="text" placeholder="例如 4，供題庫分發使用" /></div>
+              <div class="field-row"><label for="newCardClassInput">班級（選填）</label><input id="newCardClassInput" type="text" placeholder="例如 甲班 / 401" /></div>
+              <div class="field-row"><label for="newCardNameInput">暱稱 / 顯示名稱（選填）</label><input id="newCardNameInput" type="text" placeholder="例如 小火龍；未填則自動以卡序命名" /></div>
+              <div class="field-row"><label for="newCardUidInput">新卡 UID / NTAG / NFC</label><input id="newCardUidInput" type="text" placeholder="先讀取卡片 UID，再進行註冊" /></div>
+              <div class="field-row"><label for="cardAdminNtagInput">補卡 / 重綁的新卡 UID / NTAG</label><input id="cardAdminNtagInput" type="text" placeholder="例如 UID-NTAG-4A7C-01 或掃描到的新卡識別" /></div>
+            </div>
+            <div class="button-row wrap"><button id="btnReadNewCardUid" type="button" class="btn">讀取新卡 UID</button><button id="btnRegisterNewCard" type="button" class="btn btn-solid">註冊新卡 / 發卡</button><button id="btnRegisterNewCardAndWriteNfc" type="button" class="btn">註冊新卡並寫入 NFC</button></div>
+            <pre id="newCardRegistrationText">尚未建立新卡；正式流程：輸入年級與卡序 → 讀取 UID → 防重檢查 → 建立學生主檔 / token / student_pages → 寫入 NFC。</pre>
+            <hr class="panel-divider" />
+            <div class="field-grid two-col compact-grid"><div class="field-row"><label for="cardWorkflowSerialInput">補卡卡序 / serial</label><input id="cardWorkflowSerialInput" type="text" placeholder="先輸入卡序查找學生，例如 001" /></div><div class="field-row"><label>補卡 / 重綁 UID 欄位</label><div class="legacy-callout">請直接使用上方「補卡 / 重綁的新卡 UID / NTAG」欄位。</div></div></div>
+            <div class="button-row wrap"><button id="btnCardWorkflowLookup" type="button" class="btn btn-solid">依卡序查找補卡學生</button><button id="btnReadCardAdminUid" type="button" class="btn">讀取補卡新卡 UID</button><button id="btnBindNtag" type="button" class="btn">綁定新卡至目前 active token</button><button id="btnRefreshTokenSummary" type="button" class="btn">刷新 token 摘要</button><button id="btnOpenCardAdminModal" type="button" class="btn">卡務視窗</button></div>
+            <pre id="cardWorkflowStudentText">尚未依卡序查找補卡學生</pre>
+            <pre id="tokenSummaryText">尚未載入 token 摘要</pre>
+            <hr class="panel-divider" />
+            <div class="button-row wrap"><button id="btnPreviewCardWorkflow" type="button" class="btn">預覽補卡 / 重綁流程</button><button id="btnRunCardWorkflow" type="button" class="btn btn-solid">一鍵補卡 / 重綁</button><button id="btnCopyCardWorkflow" type="button" class="btn">複製卡務摘要</button></div>
+            <pre id="cardWorkflowText">尚未產生卡務流程摘要</pre>
+            <div class="button-row wrap"><button id="btnRefreshCardActionStrip" type="button" class="btn">重整卡務步驟板</button><button id="btnCopyCardActionStrip" type="button" class="btn">複製卡務步驟板</button></div>
+            <div id="cardActionStrip" class="legacy-grid"><div class="legacy-callout">尚未產生卡務一鍵流程步驟板</div></div>
+            <div class="button-row wrap"><button id="btnRefreshCardFieldCheck" type="button" class="btn">重整卡務現場確認</button><button id="btnCopyCardFieldCheck" type="button" class="btn">複製卡務現場確認</button></div>
+            <pre id="cardFieldCheckText">尚未產生卡務現場確認</pre>
+          </div>
+          <div class="glass-panel">
+            <div class="field-row"><label for="deactivateTokenInput">停用指定 token</label><input id="deactivateTokenInput" type="text" placeholder="輸入要失效的 token" /></div>
+            <div class="button-row wrap"><button id="btnReissueToken" type="button" class="btn btn-solid">補發 / 重發新 token</button><button id="btnDeactivateToken" type="button" class="btn">停用舊 token</button></div>
+            <hr class="panel-divider" />
+            <h3 class="tech-font">📡 學生頁網址 / NFC 寫入</h3>
+            <div class="field-row"><label for="studentUrlOutput">目前學生頁網址</label><input id="studentUrlOutput" type="text" readonly placeholder="請先載入學生與 active token" /></div>
+            <div class="button-row wrap"><button id="btnCopyStudentUrl" type="button" class="btn">複製學生頁網址</button><button id="btnWriteStudentNfc" type="button" class="btn">寫入學生頁網址到 NFC</button><button id="btnRefreshNtagPanel" type="button" class="btn">刷新 NFC 摘要</button></div>
+            <div id="teacherNtagPanel" class="result-panel"><h3>老師頁骨架：NFC / NTAG / 系統入口</h3><pre id="teacherNtagText">請先載入學生。這裡會顯示 active token、學生頁網址與 NFC 寫入狀態。</pre></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="forgeSection" data-page-pane="teacher-system">
+        <div class="section-chrome"><h2 class="tech-font">📡 道具卡鑄造 / 批量掃描串接</h2><span class="section-chip">NTAG / Item Card</span></div>
+        <div class="result-summary">沿用舊版概念：老師先建立可寫入 NTAG 的道具效果，再在批量掃描流程中快速套用。</div>
+        <div class="subsection-grid">
+          <div class="glass-panel">
+            <div class="field-row"><label for="forgeModeSelect">道具模式</label><select id="forgeModeSelect"><option value="xp">加分道具</option><option value="debuff">負面狀態道具</option></select></div>
+            <div class="field-row"><label for="forgeNameInput">道具卡名稱</label><input id="forgeNameInput" type="text" placeholder="例如：上課發言、作業缺交" /></div>
+            <div class="field-row"><label for="forgeReasonInput">道具效果描述</label><input id="forgeReasonInput" type="text" placeholder="例如：主動發表想法，給予木屬性經驗" /></div>
+            <div id="forgeXpFields"><div class="field-grid two-col compact-grid"><div class="field-row"><label for="forgeAttrSelect">加分屬性</label><select id="forgeAttrSelect"><option value="metal">金</option><option value="wood">木</option><option value="water">水</option><option value="fire">火</option><option value="earth">土</option></select></div><div class="field-row"><label for="forgeAmountInput">XP</label><input id="forgeAmountInput" type="number" value="5" min="1" /></div></div></div>
+            <div id="forgeDebuffFields" class="hidden"><div class="field-grid two-col compact-grid"><div class="field-row"><label for="forgeDebuffSelect">負面狀態</label><select id="forgeDebuffSelect"><option value="Poison">中毒</option><option value="Frozen">冰凍</option><option value="Paralyzed">麻痺</option><option value="Confusion">混亂</option></select></div><div class="field-row"><label for="forgeStacksInput">層數</label><input id="forgeStacksInput" type="number" value="1" min="1" max="5" /></div></div></div>
+            <div class="button-row wrap"><button id="btnSaveForgeCard" type="button" class="btn btn-solid">建立 / 更新道具卡</button><button id="btnRefreshForgeCards" type="button" class="btn">重載自訂道具卡</button><button id="btnOpenForgeModal" type="button" class="btn">鑄造視窗</button></div>
+          </div>
+          <div class="glass-panel"><h3 class="tech-font">自訂道具卡清單</h3><pre id="forgeCardListText">尚未載入自訂道具卡</pre></div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="teacherLogsSection" data-page-pane="teacher-system">
+        <div class="section-chrome"><h2 class="tech-font">📜 老師操作結果 / 事件紀錄</h2><span class="section-chip">即時回饋</span></div>
+        <div class="subsection-grid">
+          <div class="glass-panel teacher-result-panel"><div class="section-chrome"><h3 id="teacherOpsResultSummary" class="tech-font">尚未執行</h3><span class="section-chip" id="teacherOpsResultChip">待命</span></div><div id="teacherOpsResultMeta" class="teacher-op-inline-status">尚未產生操作結果</div><div id="teacherOpsResultCards" class="teacher-result-cards"><div class="teacher-result-card"><span class="teacher-result-label">學生</span><strong>尚未載入</strong><small>請先查找學生</small></div><div class="teacher-result-card"><span class="teacher-result-label">操作</span><strong>待命</strong><small>尚未執行任何老師端操作</small></div><div class="teacher-result-card"><span class="teacher-result-label">驗證</span><strong>未開始</strong><small>寫入後會顯示 XP / 金幣 / 事件紀錄驗證</small></div></div><pre id="teacherOpsResultText">尚未執行</pre></div>
+          <div class="glass-panel"><h3 class="tech-font">近期事件紀錄</h3><pre id="teacherStudentLogText">尚無事件紀錄</pre></div>
+          <div class="glass-panel"><h3 class="tech-font">學習問題 / 狀態紀錄</h3><pre id="teacherIssueText">尚無學習問題紀錄</pre></div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="systemZoneSection" data-page-pane="system-zone">
+        <div class="section-chrome"><h2 class="tech-font">🧰 老師獨立系統區</h2><span class="section-chip">系統管理</span></div>
+        <div class="dashboard-grid mini-dashboard">
+          <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenShopConfigModal"><span class="dashboard-emoji">🛍️</span><span class="dashboard-title">商品設置</span><span class="dashboard-copy">建立、上下架與條件設定。</span></button>
+          <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenBossConfigModal"><span class="dashboard-emoji">⚔️</span><span class="dashboard-title">Boss 設置</span><span class="dashboard-copy">Boss 與題庫指派、每日重置。</span></button>
+          <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenQuestionSetModal"><span class="dashboard-emoji">📝</span><span class="dashboard-title">題庫管理</span><span class="dashboard-copy">依年級、學期與單元篩選派題。</span></button>
+          <button type="button" class="dashboard-card compact quick-open" data-click-target="btnOpenBatchAdminModal"><span class="dashboard-emoji">🧰</span><span class="dashboard-title">批次工具</span><span class="dashboard-copy">卡序區間預覽、同步與重置。</span></button>
+        </div>
+        <div class="button-row wrap legacy-quick-row">
+          <button type="button" class="btn btn-solid" id="btnOpenSystemSummaryModal">系統區總覽視窗</button>
+          <button type="button" class="btn" id="btnOpenShopConfigModal">商品設置視窗</button>
+          <button type="button" class="btn" id="btnOpenBossConfigModal">Boss 設置視窗</button>
+          <button type="button" class="btn" id="btnOpenQuestionSetModal">題庫 / 命題視窗</button>
+          <button type="button" class="btn" id="btnOpenBatchAdminModal">批次調整視窗</button>
+        </div>
+        <div class="legacy-system-grid">
+          <button type="button" class="btn menu-btn legacy-system-btn" data-system-target="overview"><span class="btn-main">🧭 系統總覽</span><span class="btn-sub">系統入口與狀態</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-system-target="shop"><span class="btn-main">🛍️ 商品設置區</span><span class="btn-sub">商城設定 / 獎勵管理</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-system-target="boss"><span class="btn-main">⚔️ Boss 設置區</span><span class="btn-sub">分年段 / 題目設定</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-system-target="quiz"><span class="btn-main">📝 題庫數據庫</span><span class="btn-sub">題庫管理 / 佈題</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-system-target="batch"><span class="btn-main">🧭 批次調整工具</span><span class="btn-sub">批次重整與同步</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-system-target="support"><span class="btn-main">🪴 學習輔助專區</span><span class="btn-sub">點名 / 紀錄 / 輸出</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-system-target="science"><span class="btn-main">🔬 科展團隊專區</span><span class="btn-sub">研究紀錄 / 摘要輸出</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-nav-target="cardAdminSection"><span class="btn-main">💳 卡務 / 補卡系統</span><span class="btn-sub">發卡 / 補卡 / 綁卡</span></button>
+          <button type="button" class="btn menu-btn legacy-system-btn" data-nav-target="studentCoreSection"><span class="btn-main">🐉 學生正式頁</span><span class="btn-sub">接續學生前台整合</span></button>
+        </div>
+        <div class="system-tab-row" role="tablist" aria-label="系統區切頁">
+          <button type="button" class="btn system-tab is-active" data-system-tab="overview">總覽</button>
+          <button type="button" class="btn system-tab" data-system-tab="shop">商品設置</button>
+          <button type="button" class="btn system-tab" data-system-tab="boss">Boss 設置</button>
+          <button type="button" class="btn system-tab" data-system-tab="quiz">題庫 / 命題</button>
+          <button type="button" class="btn system-tab" data-system-tab="batch">批次調整</button>
+          <button type="button" class="btn system-tab" data-system-tab="support">學習輔助</button>
+          <button type="button" class="btn system-tab" data-system-tab="science">科展專區</button>
+        </div>
+        <div class="subsection-grid system-tab-panels">
+          <div class="glass-panel system-pane is-active" data-system-pane="overview">
+            <h3 class="tech-font">穩定整合狀態</h3>
+            <div class="notice-banner notice-success">這一輪開始把舊版「老師獨立系統區」正式落地到新版分檔：商品設置、Boss、題庫 / 命題、批次調整都會真的寫資料，而不只是留骨架。</div>
+            <div class="status-grid"><div class="status-card status-ok"><div class="status-label">核心流程</div><div class="status-value">持續可用</div><div class="status-hint">登入、查學生、加分、卡務、批量掃描第一版都保留。</div></div><div class="status-card status-neutral"><div class="status-label">本輪主題</div><div class="status-value">獨立系統區</div><div class="status-hint">商品設置、Boss、題庫、批次工具開始進新版。</div></div></div>
+            <div class="result-panel"><h3 class="tech-font">系統入口狀態</h3><div class="result-summary">在這裡查看目前系統入口與切換狀態。</div><pre id="stableOpsNote">正式入口、測試入口與維護入口的狀態會顯示在這裡。</pre></div>
+            <div class="button-row wrap"><button id="btnRefreshSystemZoneSnapshot" type="button" class="btn">重整系統區快照</button><button id="btnCopySystemZoneSnapshot" type="button" class="btn btn-solid">複製系統區快照</button></div>
+            <pre id="systemZoneSnapshotText">尚未建立系統區快照</pre>
+          </div>
+          <div class="glass-panel system-pane" data-system-pane="shop">
+            <h3 class="tech-font">商品設置區</h3>
+            <div class="notice-banner notice-neutral">參照舊版：商品會直接讀取 <code>shop_catalog</code>，支援一般商品 / 實體獎勵 / 隱藏蛋。可直接部署舊版的「碧瀾麒麟蛋」。</div>
+            <div class="field-grid two-col compact-grid">
+              <div class="field-row"><label for="shopConfigNameInput">商品名稱</label><input id="shopConfigNameInput" type="text" placeholder="例如：🌊 碧瀾麒麟蛋" /></div>
+              <div class="field-row"><label for="shopConfigPriceInput">價格</label><input id="shopConfigPriceInput" type="number" min="1" value="30" /></div>
+              <div class="field-row span-2"><label for="shopConfigDescInput">商品說明</label><textarea id="shopConfigDescInput" placeholder="例如：購買後進入孵化紀錄，最終可轉化為碧瀾麒麟。" style="min-height:72px;"></textarea></div>
+              <div class="field-row"><label for="shopConfigEffectSelect">商品效果</label><select id="shopConfigEffectSelect"><option value="physical_reward">實體獎勵 / 憑證</option><option value="hidden_egg">隱藏蛋（麒麟蛋）</option><option value="antidote">萬靈藥</option><option value="evo_stone">進化石</option><option value="wonder_stone">進化奇石</option></select></div>
+              <div class="field-row"><label for="shopConfigHiddenEggSelect">隱藏蛋種類</label><select id="shopConfigHiddenEggSelect"><option value="">非隱藏蛋可忽略</option><option value="azure_kirin">碧瀾麒麟蛋</option></select></div>
+              <div class="field-row"><label for="shopConfigQuantityInput">數量</label><input id="shopConfigQuantityInput" type="number" min="0" value="1" placeholder="0=售罄 / 空白=不限量" /></div>
+              <div class="field-row"><label for="shopConfigMinGradeInput">年級限制</label><input id="shopConfigMinGradeInput" type="text" placeholder="例如：4" /></div>
+              <div class="field-row"><label for="shopConfigTitleInput">稱號限制</label><input id="shopConfigTitleInput" type="text" placeholder="可留空" /></div>
+            </div>
+            <div class="field-row"><label><input id="shopConfigActiveInput" type="checkbox" checked /> 上架中</label></div>
+            <div class="button-row wrap"><button id="btnSaveShopConfig" type="button" class="btn btn-solid">儲存商品設定</button><button id="btnDeployAzureKirinEgg" type="button" class="btn">部署舊版碧瀾麒麟蛋</button><button id="btnRefreshShopConfig" type="button" class="btn">重載商品清單</button></div>
+            <div class="button-row wrap"><button id="btnRefreshShopChecklist" type="button" class="btn">重整商品設置檢查</button><button id="btnCopyShopChecklist" type="button" class="btn btn-solid">複製商品設置檢查</button></div>
+            <pre id="shopConfigChecklistText">尚未建立商品設置檢查</pre>
+            <pre id="shopConfigListText">尚未載入商品清單</pre>
+          </div>
+          <div class="glass-panel system-pane" data-system-pane="boss">
+            <h3 class="tech-font">Boss 設置區</h3>
+            <div class="field-grid two-col compact-grid">
+              <div class="field-row"><label for="bossConfigNameInput">Boss 名稱</label><input id="bossConfigNameInput" type="text" placeholder="例如：火焰貓王" /></div>
+              <div class="field-row"><label for="bossConfigAttrSelect">屬性</label><select id="bossConfigAttrSelect"><option value="metal">金</option><option value="wood">木</option><option value="water">水</option><option value="fire">火</option><option value="earth">土</option></select></div>
+              <div class="field-row"><label for="bossConfigQuestionSetSelect">對應題庫</label><select id="bossConfigQuestionSetSelect"><option value="">請先重載題庫清單</option></select></div><div class="field-row"><label for="bossConfigQuestionSetInput">題庫 ID</label><input id="bossConfigQuestionSetInput" type="text" placeholder="例如：4上__CH1__boss" /></div>
+            </div>
+            <div class="field-row"><label><input id="bossConfigActiveInput" type="checkbox" checked /> 啟用此 Boss</label></div>
+            <div class="button-row wrap"><button id="btnSaveBossConfig" type="button" class="btn btn-solid">儲存 Boss 設定</button><button id="btnRefreshBossConfig" type="button" class="btn">重載 Boss 清單</button></div>
+            <div class="button-row wrap"><button id="btnRefreshBossChecklist" type="button" class="btn">重整 Boss 設置檢查</button><button id="btnCopyBossChecklist" type="button" class="btn btn-solid">複製 Boss 設置檢查</button></div>
+            <pre id="bossConfigChecklistText">尚未建立 Boss 設置檢查</pre>
+            <pre id="bossConfigListText">尚未載入 Boss 清單</pre>
+          </div>
+          <div class="glass-panel system-pane" data-system-pane="quiz">
+            <h3 class="tech-font">題庫 / 命題專區</h3>
+            <div class="notice-banner notice-neutral">恢復舊版邏輯：以「年級群組（三、四、五、六、學習扶助）＋學期（上/下）＋單元（CH1/CH2）」分題庫，並支援單題輸入與批量貼上。每日/Boss 皆於中午 12:00 重置次數與獲取限制。</div>
+            <div class="field-grid two-col compact-grid">
+              <div class="field-row"><label for="questionSetNameInput">題庫名稱</label><input id="questionSetNameInput" type="text" placeholder="例如：四年級上學期 CH1 每日訓練" /></div>
+              <div class="field-row"><label for="questionSetAudienceSelect">年級群組</label><select id="questionSetAudienceSelect"><option value="grade3">三年級</option><option value="grade4">四年級</option><option value="grade5" selected>五年級</option><option value="grade6">六年級</option><option value="support">學習扶助</option></select></div>
+              <div class="field-row"><label for="questionSetSemesterSelect">學期</label><select id="questionSetSemesterSelect"><option value="上">上</option><option value="下">下</option></select></div>
+              <div class="field-row"><label for="questionSetGradeInput">顯示年級</label><input id="questionSetGradeInput" type="text" placeholder="例如：5上 / 學習扶助班" /></div>
+              <div class="field-row"><label for="questionSetUnitInput">單元</label><select id="questionSetUnitInput"><option value="CH1">CH1</option><option value="CH2">CH2</option><option value="CH3">CH3</option><option value="CH4">CH4</option><option value="CH5">CH5</option><option value="CH6">CH6</option></select></div>
+              <div class="field-row"><label for="questionSetClassInput">班級（可選）</label><input id="questionSetClassInput" type="text" placeholder="例如：401" /></div>
+              <div class="field-row"><label for="questionSetModeSelect">用途</label><select id="questionSetModeSelect"><option value="daily">每日訓練</option><option value="boss">Boss 題庫</option><option value="helper">學習輔助</option></select></div>
+              <div class="field-row"><label for="quizActiveInput">佈題狀態</label><select id="quizActiveInput"><option value="false">未開放</option><option value="true">已派發</option></select></div>
+              <div class="field-row span-2"><label for="quizQuestionInput">題目</label><textarea id="quizQuestionInput" placeholder="輸入題目" style="min-height:72px;"></textarea></div>
+              <div class="field-row"><label for="quizOption1Input">選項 1</label><input id="quizOption1Input" type="text" /></div>
+              <div class="field-row"><label for="quizOption2Input">選項 2</label><input id="quizOption2Input" type="text" /></div>
+              <div class="field-row"><label for="quizOption3Input">選項 3</label><input id="quizOption3Input" type="text" /></div>
+              <div class="field-row"><label for="quizOption4Input">選項 4</label><input id="quizOption4Input" type="text" /></div>
+              <div class="field-row"><label for="quizAnswerSelect">正解</label><select id="quizAnswerSelect"><option value="1">選項 1</option><option value="2">選項 2</option><option value="3">選項 3</option><option value="4">選項 4</option></select></div>
+            </div>
+            <div class="button-row wrap"><button id="btnSaveQuestionSet" type="button" class="btn btn-solid">儲存單題 / 題組設定</button><button id="btnRefreshQuestionSet" type="button" class="btn">重載題庫清單</button><button id="btnLoadQuizTemplate" type="button" class="btn">載入批量格式範例</button><button id="btnFillQuestionSetName" type="button" class="btn">依年級+單元回填題庫名稱</button><button id="btnClearQuizEditor" type="button" class="btn">清空編輯器</button></div>
+            <input id="quizEditingIdInput" type="hidden" />
+            <div class="field-row"><label for="quizBulkImportInput">批量貼上</label><textarea id="quizBulkImportInput" placeholder="例如：&#10;5上&#9;CH1&#9;太陽從哪邊升起？&#9;東&#9;西&#9;南&#9;北&#9;1" style="min-height:120px;"></textarea></div><div class="glass-panel"><h4 class="tech-font">命題權限 / 刪除治理</h4><div class="field-grid two-col compact-grid"><div class="field-row"><label for="quizEditorsInput">可建置老師 / 管理員 Email</label><textarea id="quizEditorsInput" style="min-height:72px;" placeholder="每行一個 Email"></textarea></div><div class="field-row"><label for="quizAdminsInput">管理員 Email（可批准刪除）</label><textarea id="quizAdminsInput" style="min-height:72px;" placeholder="每行一個 Email"></textarea></div></div><div class="button-row wrap"><button id="btnSaveQuizGovernance" type="button" class="btn">儲存命題權限</button><button id="btnRefreshQuizGovernance" type="button" class="btn">重載命題權限</button></div><pre id="quizGovernanceText">尚未載入命題權限</pre><div class="field-row"><label for="quizDeleteRequestSelect">待批准刪除申請</label><select id="quizDeleteRequestSelect"><option value="">目前沒有待批准申請</option></select></div><div class="button-row wrap"><button id="btnApproveDeleteQuiz" type="button" class="btn">管理員批准刪除</button></div><pre id="quizDeleteRequestText">尚未載入刪除申請</pre></div>
+            <div class="button-row wrap"><button id="btnImportQuestionBulk" type="button" class="btn">批量匯入</button><button id="btnExportQuizTsv" type="button" class="btn">匯出目前篩選 TSV</button></div>
+            <div class="field-grid three-col compact-grid">
+              <div class="field-row"><label for="quizFilterAudienceSelect">篩選年級群組</label><select id="quizFilterAudienceSelect"><option value="">全部</option><option value="grade3">三年級</option><option value="grade4">四年級</option><option value="grade5">五年級</option><option value="grade6">六年級</option><option value="support">學習扶助</option></select></div>
+              <div class="field-row"><label for="quizFilterSemesterSelect">篩選學期</label><select id="quizFilterSemesterSelect"><option value="">全部</option><option value="上">上</option><option value="下">下</option></select></div>
+              <div class="field-row"><label for="quizFilterUnitInput">篩選單元</label><select id="quizFilterUnitInput"><option value="">全部</option><option value="CH1">CH1</option><option value="CH2">CH2</option><option value="CH3">CH3</option><option value="CH4">CH4</option><option value="CH5">CH5</option><option value="CH6">CH6</option></select></div>
+              <div class="field-row"><label for="quizFilterGradeInput">顯示年級</label><input id="quizFilterGradeInput" type="text" placeholder="例如：5上 / 學習扶助班" /></div>
+              <div class="field-row"><label for="quizFilterKeywordInput">關鍵字</label><input id="quizFilterKeywordInput" type="text" placeholder="題目關鍵字" /></div>
+            </div>
+            <div class="button-row wrap"><button id="btnApplyQuizFilter" type="button" class="btn">套用題庫篩選</button><button id="btnResetQuizFilter" type="button" class="btn">清除篩選</button></div>
+            <div class="button-row wrap"><button id="btnRefreshQuizChecklist" type="button" class="btn">重整題庫檢查</button><button id="btnCopyQuizChecklist" type="button" class="btn btn-solid">複製題庫檢查</button></div>
+            <pre id="questionSetChecklistText">尚未建立題庫檢查</pre>
+            <div class="field-row"><label for="quizEntrySelect">題目清單</label><select id="quizEntrySelect"><option value="">請先重載題庫</option></select></div>
+            <div class="button-row wrap"><button id="btnLoadSelectedQuiz" type="button" class="btn">載入選取題目到編輯器</button><button id="btnToggleSelectedQuiz" type="button" class="btn">切換上架 / 下架</button><button id="btnDeleteSelectedQuiz" type="button" class="btn">刪除選取題目</button></div>
+            <pre id="questionSetListText">尚未載入題庫清單</pre>
+          </div>
+          <div class="glass-panel system-pane" data-system-pane="batch">
+            <h3 class="tech-font">批次調整 / 同步工具</h3>
+            <div class="field-grid two-col compact-grid">
+              <div class="field-row"><label for="batchAdminStartInput">起始卡序</label><input id="batchAdminStartInput" type="text" placeholder="例如：001" /></div>
+              <div class="field-row"><label for="batchAdminEndInput">結束卡序</label><input id="batchAdminEndInput" type="text" placeholder="例如：030" /></div>
+              <div class="field-row"><label for="batchAdminActionSelect">批次動作</label><select id="batchAdminActionSelect"><option value="promote_grade">批次提升年級</option><option value="set_grade">指定新年級</option><option value="reset_daily">輕度重置：每日狀態</option><option value="reset_growth">中度重置：成長資料</option><option value="reset_full">完全重置：保留身份</option></select></div>
+              <div class="field-row"><label for="batchAdminTargetGradeInput">指定年級（選填）</label><input id="batchAdminTargetGradeInput" type="text" placeholder="例如：5" /></div>
+            </div>
+            <div class="glass-panel">
+              <h4 class="tech-font">老師班級 / 卡序權限治理</h4>
+              <div class="field-grid two-col compact-grid">
+                <div class="field-row"><label for="teacherScopeAdminsInput">管理員 Email</label><textarea id="teacherScopeAdminsInput" style="min-height:72px;" placeholder="每行一個 Email"></textarea></div>
+                <div class="field-row"><label for="teacherScopeRulesInput">老師範圍規則</label><textarea id="teacherScopeRulesInput" style="min-height:120px;" placeholder="每行一位老師，格式：email[TAB]班級1,班級2[TAB]001-030,101-120[TAB]備註"></textarea></div>
+              </div>
+              <div class="button-row wrap"><button id="btnSaveTeacherGovernance" type="button" class="btn">儲存老師權限範圍</button><button id="btnRefreshTeacherGovernance" type="button" class="btn">重載老師權限範圍</button></div>
+              <pre id="teacherGovernanceText">尚未載入老師權限治理</pre>
+            </div>
+            <div class="button-row wrap"><button id="btnPreviewBatchAdmin" type="button" class="btn">預覽影響範圍</button><button id="btnRunBatchAdmin" type="button" class="btn btn-solid">執行批次調整</button></div>
+            <div class="button-row wrap"><button id="btnRefreshBatchAdminChecklist" type="button" class="btn">重整批次檢查</button><button id="btnCopyBatchAdminChecklist" type="button" class="btn btn-solid">複製批次檢查</button></div>
+            <pre id="batchAdminChecklistText">尚未建立批次檢查</pre>
+            <pre id="batchAdminPreviewText">尚未預覽</pre>
+            <pre id="batchAdminResultText">尚未執行批次調整</pre>
+          </div>
+          <div class="glass-panel system-pane" data-system-pane="support">
+            <h3 class="tech-font">學習輔助專區</h3>
+            <div class="notice-banner notice-neutral">依目前載入學生，自動整理五系能力、狀態、近期事件與學習問題，可直接複製作為點名 / 紀錄 / 輸出底稿。</div>
+            <div class="button-row wrap"><button id="btnRefreshSupportZone" type="button" class="btn">重整學習輔助摘要</button><button id="btnCopySupportZone" type="button" class="btn btn-solid">複製學習輔助摘要</button></div>
+            <pre id="supportZoneReportText">尚未整理學習輔助摘要</pre>
+          </div>
+          <div class="glass-panel system-pane" data-system-pane="science">
+            <h3 class="tech-font">科展團隊專區</h3>
+            <div class="notice-banner notice-neutral">依目前載入學生，自動整理研究隊伍觀察、能力分布、近期紀錄與輸出摘要，可作為科展團隊追蹤底稿。</div>
+            <div class="button-row wrap"><button id="btnRefreshScienceZone" type="button" class="btn">重整科展摘要</button><button id="btnCopyScienceZone" type="button" class="btn btn-solid">複製科展摘要</button></div>
+            <pre id="scienceZoneReportText">尚未整理科展摘要</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="tech-panel legacy-hidden-zone" id="studentCoreSection" data-page-pane="student-page">
+        <div class="entry-flow-inline">學生專用入口：掃描已寫入網址的 NTAG 後，直接進入養成、每日挑戰、Boss、收藏與 AI 對話。</div>
+        <div class="section-chrome"><h2 class="tech-font">🐉 學生端頁面</h2><span class="section-chip">學生前台</span></div>
+        <div class="dashboard-grid mini-dashboard student-dashboard">
+          <button id="btnStudentDashGrowth" type="button" class="dashboard-card compact"><span class="dashboard-emoji">🌟</span><span class="dashboard-title">養成總覽</span><span class="dashboard-copy">異獸、五維雷達與學習指標。</span></button>
+          <button id="btnStudentDashDailyBoss" type="button" class="dashboard-card compact"><span class="dashboard-emoji">🔥</span><span class="dashboard-title">每日 / Boss</span><span class="dashboard-copy">每日挑戰、Boss 戰與獎勵重置。</span></button>
+          <button id="btnStudentDashCollection" type="button" class="dashboard-card compact"><span class="dashboard-emoji">🖼️</span><span class="dashboard-title">收藏 / 隊伍</span><span class="dashboard-copy">成熟期異獸、隊伍排序與放大快照。</span></button>
+          <button id="btnStudentDashAi" type="button" class="dashboard-card compact"><span class="dashboard-emoji">💬</span><span class="dashboard-title">AI 夥伴</span><span class="dashboard-copy">查看世界觀、夥伴設定與互動。</span></button>
+        </div>
+        <div class="subsection-grid">
+          <div class="glass-panel">
+            <h3 class="tech-font">學生端摘要</h3>
+            <div class="summary-strip vertical-on-mobile">
+              <div><strong>目前學生：</strong><span id="studentCoreName">未載入</span></div>
+              <div><strong>學生 token：</strong><span id="studentCoreToken">未設定</span></div>
+              <div><strong>最後結算：</strong><span id="studentCoreLastSettle">尚未執行</span></div>
+              <div><strong>目前隱藏蛋：</strong><span id="studentCoreActiveHiddenEgg">無</span></div>
+            </div>
+            <div id="studentCoreBanner" class="notice-banner notice-neutral">請先載入學生，才能測試學生核心流程。</div>
+            <div class="status-grid"><div class="status-card" id="dailyStatusCard"><div class="status-label">每日歷練</div><div class="status-value" id="dailyStatusValue">0 / 10</div><div class="status-hint" id="dailyStatusHint">請先感應學生卡</div></div><div class="status-card" id="bossStatusCard"><div class="status-label">Boss 獎勵</div><div class="status-value" id="bossStatusValue">未判定</div><div class="status-hint" id="bossStatusHint">請先感應學生卡</div></div></div>
+            <div id="guideCard" class="guide-card"><div class="guide-card-media"><img id="guideAvatar" alt="AI 夥伴" /></div><div class="guide-card-body"><div class="guide-kicker">AI 夥伴</div><h3 id="guideTitle">智者貓咪</h3><p id="guideSubtitle" class="muted">安全預設</p><p id="guideDescription" class="guide-description">溫和、耐心、適合孩子的學習夥伴。</p><div class="guide-badges"><span class="badge" id="guideModeBadge">cat</span><span class="badge secondary" id="guideLockBadge">locked</span></div></div></div>
+            <div class="student-front-shell">
+              <div class="student-front-hero">
+                <div class="student-front-kicker">學生前台工作艙</div>
+                <div class="student-front-name-row"><div id="studentFrontNickname" class="student-front-name">未載入學生</div><span id="studentFrontWorldBadge" class="student-front-badge">模式未設定</span></div>
+                <div id="studentFrontSubtitle" class="student-front-subtitle">請先載入學生後，再檢查舊版前台體感是否對齊。</div>
+                <div id="studentFrontStageBadge" class="student-front-stage-badge">尚未判定成長階段</div>
+                <div class="student-front-stat-grid">
+                  <div class="student-front-stat-card"><span class="student-front-stat-label">金幣</span><strong id="studentFrontCoins">0</strong><small>coins</small></div>
+                  <div class="student-front-stat-card"><span class="student-front-stat-label">成長能量</span><strong id="studentFrontXP">0</strong><small>totalXP</small></div>
+                  <div class="student-front-stat-card"><span class="student-front-stat-label">稱號</span><strong id="studentFrontTitle">未設定</strong><small>title</small></div>
+                  <div class="student-front-stat-card"><span class="student-front-stat-label">年級</span><strong id="studentFrontGrade">未設定</strong><small>grade</small></div>
+                </div>
+                <div class="student-front-story-grid">
+                  <div class="student-front-story-card">
+                    <span class="student-front-story-label">今日任務</span>
+                    <strong id="studentFrontStoryDaily">等待載入學生</strong>
+                    <small id="studentFrontStoryDailyHint">先由老師查找學生，再回到學生前台檢查每日歷練入口。</small>
+                  </div>
+                  <div class="student-front-story-card">
+                    <span class="student-front-story-label">Boss 追蹤</span>
+                    <strong id="studentFrontStoryBoss">尚未載入 Boss 狀態</strong>
+                    <small id="studentFrontStoryBossHint">會顯示挑戰摘要、最近結果與切換入口。</small>
+                  </div>
+                  <div class="student-front-story-card">
+                    <span class="student-front-story-label">排行進度</span>
+                    <strong id="studentFrontStoryRanking">尚未載入排行目標</strong>
+                    <small id="studentFrontStoryRankingHint">會顯示目前階級與距離下一階段差距。</small>
+                  </div>
+                </div>
+                <div class="student-front-entry-grid">
+                  <button id="btnStudentFrontGoDaily" type="button" class="student-front-entry-card">
+                    <span class="student-front-entry-title">每日歷練</span>
+                    <span id="studentFrontDailyEntryText" class="student-front-entry-copy">前往每日題目與今日進度</span>
+                  </button>
+                  <button id="btnStudentFrontGoBoss" type="button" class="student-front-entry-card">
+                    <span class="student-front-entry-title">Boss 挑戰</span>
+                    <span id="studentFrontBossEntryText" class="student-front-entry-copy">前往 Boss 清單與挑戰結果</span>
+                  </button>
+                  <button id="btnStudentFrontGoPartner" type="button" class="student-front-entry-card">
+                    <span class="student-front-entry-title">AI 夥伴</span>
+                    <span id="studentFrontPartnerEntryText" class="student-front-entry-copy">查看世界觀、夥伴與最近回覆</span>
+                  </button>
+                  <button id="btnStudentFrontGoShop" type="button" class="student-front-entry-card">
+                    <span class="student-front-entry-title">學生商城</span>
+                    <span id="studentFrontShopEntryText" class="student-front-entry-copy">前往可購買商品與隱藏蛋切換</span>
+                  </button>
+                  <button id="btnStudentFrontGoCollection" type="button" class="student-front-entry-card">
+                    <span class="student-front-entry-title">收藏展示</span>
+                    <span id="studentFrontCollectionEntryText" class="student-front-entry-copy">查看目前收藏與展示排序</span>
+                  </button>
+                  <button id="btnStudentFrontGoRanking" type="button" class="student-front-entry-card">
+                    <span class="student-front-entry-title">排行榜入口</span>
+                    <span id="studentFrontRankingEntryText" class="student-front-entry-copy">查看目前排行階級與下一階段目標</span>
+                  </button>
+                </div>
+                <div id="studentFrontQuickGrid" class="student-front-quick-grid">
+                  <button id="btnOpenStudentStageDetail" type="button" class="student-front-quick-card">
+                    <span class="student-front-quick-title">成長圖像 / 階段</span>
+                    <span id="studentFrontStageQuickText" class="student-front-quick-copy">查看目前階段、圖像描述與屬性固定規則</span>
+                  </button>
+                  <button id="btnOpenStudentRadarPanel" type="button" class="student-front-quick-card">
+                    <span class="student-front-quick-title">能力雷達 / 指標</span>
+                    <span id="studentFrontRadarQuickText" class="student-front-quick-copy">查看五種能力指標、來源與雷達詳情</span>
+                  </button>
+                  <button id="btnOpenStudentCollectionSpotlight" type="button" class="student-front-quick-card">
+                    <span class="student-front-quick-title">收藏展示 / 圖像放大</span>
+                    <span id="studentFrontCollectionQuickText" class="student-front-quick-copy">查看目前啟用中的收藏與展示順序</span>
+                  </button>
+                  <button id="btnOpenStudentActivityDetail" type="button" class="student-front-quick-card">
+                    <span class="student-front-quick-title">近期活動 / 排行入口</span>
+                    <span id="studentFrontActivityQuickText" class="student-front-quick-copy">查看近期事件、排行摘要與前台互動</span>
+                  </button>
+                </div>
+              </div>
+              <div class="student-front-sidecards">
+                <button id="btnOpenStudentVisualSpotlight" type="button" class="student-front-stage-visual">
+                  <div class="student-front-side-title">成長圖像互動</div>
+                  <div id="studentFrontStageVisualGlyph" class="student-front-stage-glyph">📦</div>
+                  <div id="studentFrontStageVisualTitle" class="student-front-stage-title">缺乏能量階段</div>
+                  <div id="studentFrontStageVisualText" class="student-front-stage-copy">點擊可查看目前階段的圖像描述、收藏規則與屬性固定條件。</div>
+                </button>
+                <div id="studentGuideSpotlightCard" class="student-front-sidecard student-front-guide-spotlight" role="button" tabindex="0" aria-label="查看 AI / 夥伴詳情">
+                  <div class="student-front-side-title">AI / 世界觀摘要</div>
+                  <div class="student-front-guide-row">
+                    <div id="studentFrontGuideGlyph" class="student-front-guide-glyph">🐾</div>
+                    <div>
+                      <div id="studentFrontGuideMode" class="student-front-guide-mode">cat</div>
+                      <div id="studentFrontGuideSummary" class="student-front-guide-summary">智者貓咪｜安全、陪伴式的學生引導模式。</div>
+                    </div>
+                  </div>
+                  <div id="studentFrontGuideImageHint" class="student-front-guide-hint">點擊可查看夥伴圖像、世界觀與最近一次回覆。</div>
+                  <div class="button-row wrap">
+                    <button id="btnOpenStudentOverview" type="button" class="btn btn-ghost btn-sm">學生總覽</button>
+                    <button id="btnOpenStudentPartnerDetail" type="button" class="btn btn-ghost btn-sm">AI / 夥伴詳情</button>
+                  </div>
+                </div>
+                <div class="student-front-sidecard student-front-bridge-card">
+                  <div class="student-front-side-title">正式入口規則 / 師生同步</div>
+                  <pre id="teacherStudentBridgePreview" class="student-front-bridge-preview">請先感應學生卡</pre>
+                  <div class="button-row wrap">
+                    <button id="btnOpenTeacherStudentBridge" type="button" class="btn btn-ghost btn-sm">入口規則總覽</button>
+                    <button id="btnOpenStudentFrontPreview" type="button" class="btn btn-ghost btn-sm">前台預覽</button>
+                  </div>
+                </div>
+                <div class="student-front-sidecard">
+                  <div class="student-front-side-title">排行 / 展示摘要</div>
+                  <pre id="studentFrontRankingPreview" class="student-front-ranking-preview">請先感應學生卡</pre>
+                  <div class="button-row wrap">
+                    <button id="btnOpenStudentRankingDetail" type="button" class="btn btn-ghost btn-sm">排行詳情</button>
+                    <button id="btnOpenStudentOverviewAlt" type="button" class="btn btn-ghost btn-sm">學生總覽</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="field-row"><label for="studentTokenBindInput">綁定學生 token（供後端結算）</label><input id="studentTokenBindInput" type="text" placeholder="貼上學生 token，例如 student_pages 的 token" /></div>
+            <div class="button-row wrap"><button id="btnBindStudentToken" type="button" class="btn">綁定目前學生 token</button><button id="btnStudentClearTokenSession" type="button" class="btn">清除學生 token / session</button></div>
+            <div id="studentSessionHint" class="muted">尚未綁定學生 token。</div>
+          </div>
+          <div id="studentDailyBossPanel" class="glass-panel">
+            <h3 class="tech-font">每日訓練 / Boss 測試</h3>
+            <div class="field-grid two-col compact-grid"><div class="field-row"><label for="dailyUnitSelect">每日單元</label><select id="dailyUnitSelect"><option value="">請先載入學生</option></select></div><div class="field-row"><label for="dailyAnswerSelect">每日提交模式</label><select id="dailyAnswerSelect"><option value="correct">答對（正式結算）</option><option value="wrong">答錯（只記錄，不結算）</option></select></div></div><div class="field-row"><label for="dailyQuestionMeta">題目分流</label><div id="dailyQuestionMeta" class="muted">尚未載入</div></div>
+            <div class="field-row"><label for="dailyQuestionInput">每日答題題目</label><input id="dailyQuestionInput" type="text" value="" readonly /></div>
+            <div class="field-grid two-col compact-grid"><label class="option-chip"><input type="radio" name="dailyOptionChoice" id="dailyOption1" value="1" checked /> <span id="dailyOption1Label">選項 1</span></label><label class="option-chip"><input type="radio" name="dailyOptionChoice" id="dailyOption2" value="2" /> <span id="dailyOption2Label">選項 2</span></label><label class="option-chip"><input type="radio" name="dailyOptionChoice" id="dailyOption3" value="3" /> <span id="dailyOption3Label">選項 3</span></label><label class="option-chip"><input type="radio" name="dailyOptionChoice" id="dailyOption4" value="4" /> <span id="dailyOption4Label">選項 4</span></label></div>
+            <div class="button-row"><button id="btnLoadDailyQuestion" type="button" class="btn">載入今日題目</button><button id="btnRunDailyQuiz" type="button" class="btn btn-solid">提交每日答題</button></div>
+            <div class="field-grid two-col compact-grid"><div class="field-row"><label for="bossPickerSelect">Boss 清單</label><select id="bossPickerSelect"><option value="">請先載入學生</option></select></div><div class="field-row"><label for="bossResultSelect">Boss 結果</label><select id="bossResultSelect"><option value="win">勝利（boss_win）</option><option value="lose">失敗（只記錄，不結算）</option></select></div></div>
+            <div class="field-row"><label for="bossQuestionMeta">Boss 分流</label><div id="bossQuestionMeta" class="muted">尚未載入</div></div>
+            <div class="field-row"><label for="bossIdInput">Boss ID</label><input id="bossIdInput" type="text" value="" readonly /></div>
+            <div class="button-row"><button id="btnLoadBossQuestion" type="button" class="btn">載入 Boss 清單</button><button id="btnRunBossBattle" type="button" class="btn">執行 Boss 測試</button></div>
+            <div id="studentShopPanel" class="field-grid two-col compact-grid"><div class="glass-panel"><h3 class="tech-font">學生商城預覽</h3><pre id="studentShopPreviewText">請先感應學生卡</pre><div class="field-row"><label for="studentShopSelect">學生商城商品</label><select id="studentShopSelect"><option value="">請先載入學生</option></select></div><div id="studentShopHint" class="muted">請先感應學生卡</div><div class="button-row"><button id="btnStudentBuySelected" type="button" class="btn btn-solid">學生前台購買選取商品</button></div></div><div class="glass-panel"><h3 class="tech-font">隱藏蛋 / 收藏預覽</h3><pre id="studentHiddenEggList">請先感應學生卡</pre><div class="field-row"><label for="studentHiddenEggSelect">切換啟用中的隱藏蛋</label><select id="studentHiddenEggSelect"><option value="">請先載入學生</option></select></div><div class="button-row"><button id="btnStudentActivateEgg" type="button" class="btn">啟用選取隱藏蛋</button></div></div></div>
+            <div id="studentRadarCollectionPanel" class="field-grid compact-grid"><div class="glass-panel"><div class="panel-header-row"><h3 class="tech-font">異獸主展示 / 能力雷達</h3><div class="button-row wrap"><button id="btnOpenStudentRadarDetail" type="button" class="btn btn-ghost btn-sm">雷達詳情</button><button id="btnOpenStudentCollectionSpotlightMain" type="button" class="btn btn-ghost btn-sm">異獸放大</button></div></div><div id="studentGrowthStageText" class="student-growth-stage">請先感應學生卡</div><div id="studentRadarGrid" class="student-radar-grid student-showcase-grid" role="button" tabindex="0" aria-label="查看能力雷達詳情"><div class="student-empty-card">請先感應學生卡</div></div><div class="muted">主畫面左側顯示異獸圖像，右側顯示五行五維雷達摘要；下方可點選學習指標查看來源與獲得方式。</div><div id="studentIndicatorCounts" class="student-indicator-strip"><div class="student-empty-card">請先感應學生卡</div></div></div><div class="glass-panel"><div class="panel-header-row"><h3 class="tech-font">收藏展示 / 排行隊伍</h3><div class="button-row wrap"><select id="studentCollectionSortMode" class="mini-select"><option value="custom">自訂排序</option><option value="newest">最新優先</option><option value="active_first">啟用優先</option></select><button id="btnOpenStudentCollectionDetail" type="button" class="btn btn-ghost btn-sm">收藏詳情</button><button id="btnOpenStudentMatureTeamPicker" type="button" class="btn btn-ghost btn-sm">成熟隊伍</button><button id="btnSolidifyStudentCollectionSnapshots" type="button" class="btn btn-ghost btn-sm">快照整備</button></div></div><div id="studentMatureTeamSummary" class="muted">尚未載入成熟期異獸隊伍</div><div id="studentReadinessSummary" class="muted">請先感應學生卡</div><div class="muted">可直接在卡片上按「往前 / 往後」調整展示順序，會寫回學生資料；成熟期異獸可另組排行榜展示隊伍，必要時可先做快照整備。</div><div id="studentCollectionGallery" class="student-collection-gallery"><div class="student-empty-card">請先感應學生卡</div></div></div></div>
+            <div id="studentActivityPanel" class="field-grid two-col compact-grid"><div class="glass-panel"><div class="panel-header-row"><h3 class="tech-font">近期活動</h3><div class="button-row wrap"><button id="btnOpenStudentActivityDetailAlt" type="button" class="btn btn-ghost btn-sm">活動詳情</button><button id="btnOpenStudentRankingLineup" type="button" class="btn btn-ghost btn-sm">排行榜隊伍</button></div></div><pre id="studentActivityText">請先感應學生卡</pre></div><div id="studentCoreResultPanel" class="result-panel"><h3 class="tech-font">學生流程結果</h3><div id="studentCoreResultSummary" class="result-summary">尚未執行</div><pre id="studentCoreResultText">尚未執行</pre></div></div>
+            <div id="studentFutureSystemsPanel" class="field-grid two-col compact-grid"><div class="glass-panel"><div class="panel-header-row"><h3 class="tech-font">交換神獸 / 基因庫骨架</h3><div class="button-row wrap"><button id="btnOpenStudentExchangeDetail" type="button" class="btn btn-ghost btn-sm">交換詳情</button><button id="btnOpenStudentReadinessAudit" type="button" class="btn btn-ghost btn-sm">收尾巡檢</button></div></div><div id="studentExchangeSummary" class="muted">尚未載入交換摘要</div><div class="muted">未來可在這裡設定可交換異獸、交換條件屬性與數量，並延伸到異獸基因庫與競標系統。</div></div><div class="glass-panel"><div class="panel-header-row"><h3 class="tech-font">寄宿摘要 / 保留入口</h3><div class="button-row wrap"><button id="btnOpenStudentHostelDetail" type="button" class="btn btn-ghost btn-sm">寄宿詳情</button></div></div><div id="studentHostelSummary" class="muted">尚未載入寄宿摘要</div><div class="muted">正式版會在此承接寄宿狀態、夥伴照護摘要與可領取的寄宿回饋。</div></div></div>
+            <div class="field-row"><label for="guideQuestionInput" id="guideQuestionLabel">測試 AI 問題</label><textarea id="guideQuestionInput" rows="4" placeholder="請輸入想問白澤／智者貓咪的問題"></textarea></div>
+            <div class="button-row"><button id="btnAskGuide" type="button" class="btn">請教智者貓咪</button><button id="btnOpenStudentModal" type="button" class="btn">學生正式頁預覽</button></div>
+            <div id="guideResultPanel" class="result-panel"><h3 class="tech-font">AI 回覆</h3><pre id="guideResultText">尚未提問</pre></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    </div>
+  </div>
+
+
+  <div id="legacyModal" class="legacy-modal-overlay hidden" aria-hidden="true">
+    <div class="legacy-modal-panel tech-panel" role="dialog" aria-modal="true" aria-labelledby="legacyModalTitle">
+      <div class="legacy-modal-header">
+        <div>
+          <div id="legacyModalKicker" class="hero-kicker tech-font">Legacy Flow</div>
+          <h2 id="legacyModalTitle" class="tech-font">系統視窗</h2>
+        </div>
+        <button id="legacyModalClose" type="button" class="btn">關閉</button>
+      </div>
+      <div id="legacyModalBody" class="legacy-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="feedbackModal" class="legacy-modal-overlay hidden" aria-hidden="true">
+    <div class="legacy-feedback-panel tech-panel" role="alertdialog" aria-modal="true" aria-labelledby="feedbackModalTitle">
+      <div class="legacy-modal-header">
+        <h2 id="feedbackModalTitle" class="tech-font">系統通知</h2>
+        <button id="feedbackModalClose" type="button" class="btn">知道了</button>
+      </div>
+      <pre id="feedbackModalText" class="feedback-pre">-</pre>
+    </div>
+  </div>
+
+  <div id="batchArena" class="batch-arena-overlay hidden" aria-hidden="true">
+    <div class="batch-arena-shell" role="dialog" aria-modal="true" aria-labelledby="batchArenaTitle">
+      <div class="batch-arena-header">
+        <div>
+          <div class="hero-kicker tech-font">Batch Scan Arena</div>
+          <h2 id="batchArenaTitle" class="tech-font">批量掃描專屬頁</h2>
+          <p class="batch-arena-subtitle">學生卡 → 10 秒內道具卡 → 套用成功動畫與倒數讀條。沿用現有規則，但操作體感更像老師現場的科技掃描台。</p>
+        </div>
+        <div class="button-row wrap">
+          <button id="btnBatchArenaLaunch" type="button" class="btn btn-solid">啟動學生循環</button>
+          <button id="btnBatchArenaSignal" type="button" class="btn">處理掃描碼</button>
+          <button id="btnBatchArenaApply" type="button" class="btn">套用道具卡</button>
+          <button id="btnBatchArenaClose" type="button" class="btn">離開專屬頁</button>
+        </div>
+      </div>
+      <div class="batch-arena-grid">
+        <aside class="batch-arena-side tech-panel">
+          <div class="field-row"><label for="batchArenaStudentInput">學生卡序 / 掃描結果</label><input id="batchArenaStudentInput" type="text" placeholder="例如：001" /></div>
+          <div class="field-row"><label for="batchArenaSignalInput">掃描原始碼 / NTAG / token / 道具卡 ID</label><input id="batchArenaSignalInput" type="text" placeholder="例如：001、NTAG-4A7C-01、item_xxxxx" /></div>
+          <div class="field-grid two-col compact-grid">
+            <div class="field-row"><label for="batchArenaModeSelect">道具類型</label><select id="batchArenaModeSelect"><option value="xp">加分道具</option><option value="debuff">負面狀態道具</option></select></div>
+            <div class="field-row"><label for="batchArenaPresetSelect">道具卡預設</label><select id="batchArenaPresetSelect"></select></div>
+          </div>
+          <div class="batch-arena-stats">
+            <div class="batch-stat-card">
+              <span class="batch-stat-label">目前學生</span>
+              <strong id="batchArenaStudentName">等待學生卡</strong>
+              <span id="batchArenaStudentSerial" class="batch-stat-sub">#-</span>
+            </div>
+            <div class="batch-stat-card">
+              <span class="batch-stat-label">連續加成</span>
+              <strong id="batchArenaComboText">0</strong>
+              <span class="batch-stat-sub">每位學生獨立計算</span>
+            </div>
+          </div>
+          <div class="batch-arena-result glass-panel">
+            <h3 class="tech-font">即時掃描記錄</h3>
+            <pre id="batchArenaResultText">尚未套用道具卡</pre>
+          </div>
+          <div class="batch-arena-result glass-panel">
+            <h3 class="tech-font">目前學生快照</h3>
+            <pre id="batchArenaStudentSnapshotText">尚未開啟批量學生循環</pre>
+          </div>
+          <div class="batch-arena-result glass-panel">
+            <h3 class="tech-font">最近掃描履歷</h3>
+            <pre id="batchArenaHistoryText">尚無批量掃描履歷</pre>
+          </div>
+        </aside>
+        <section class="batch-arena-main tech-panel">
+          <div class="batch-radar-head">
+            <div>
+              <div class="batch-status-kicker">倒數讀條</div>
+              <div id="batchArenaStatusText" class="batch-status-text">等待學生卡</div>
+            </div>
+            <div class="batch-timer-orb">
+              <span id="batchArenaTimerText">0.0s</span>
+            </div>
+          </div>
+          <div class="batch-progress-track">
+            <div id="batchArenaProgressBar" class="batch-progress-bar"></div>
+            <div class="batch-progress-grid"></div>
+          </div>
+          <div class="batch-arena-centerpiece">
+            <div id="batchArenaPulse" class="batch-pulse-ring"></div>
+            <div class="batch-avatar-core">
+              <div class="batch-avatar-title">學生掃描窗</div>
+              <div id="batchArenaHeroName" class="batch-avatar-name">待命</div>
+              <div id="batchArenaHeroHint" class="batch-avatar-hint">請先感應學生卡，開啟 10 秒批量掃描循環。</div>
+            </div>
+            <div id="batchArenaFx" class="batch-success-fx" aria-hidden="true">
+              <div class="batch-success-burst"></div>
+              <div class="batch-success-card">
+                <div class="batch-success-kicker">掃描加分成功</div>
+                <div id="batchArenaFxTitle" class="batch-success-title">+XP</div>
+                <div id="batchArenaFxDetail" class="batch-success-detail">學生資料已更新</div>
+              </div>
+            </div>
+          </div>
+          <div class="batch-arena-bottom">
+            <div class="glass-panel">
+              <h3 class="tech-font">掃描規則提示</h3>
+              <ul class="batch-rule-list">
+                <li>先感應學生卡，再於 10 秒內感應道具卡。</li>
+                <li>再次感應道具卡時，倒數會重新回到 10 秒。</li>
+                <li>感應到下一張學生卡時，直接開新循環，不會亂跳學生。</li>
+              </ul>
+            </div>
+            <div class="glass-panel">
+              <h3 class="tech-font">最近成功動畫訊息</h3>
+              <pre id="batchArenaFxLog">尚未觸發成功動畫</pre>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js?v=step24-r28-card-batch-workflow-20260312h"></script>
+</body>
+</html>
